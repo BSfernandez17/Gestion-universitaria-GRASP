@@ -19,36 +19,20 @@ public class Persona {
     return "Persona{id=" + id + ", nombres='" + nombres + "', apellidos='" + apellidos + "', email='" + email + "'}";
   }
 
-  public double getId() {
+  public double getID() {
     return id;
-  }
-
-  public void setId(double id) {
-    this.id = id;
   }
 
   public String getNombres() {
     return nombres;
   }
 
-  public void setNombres(String nombres) {
-    this.nombres = nombres;
-  }
-
   public String getApellidos() {
     return apellidos;
   }
 
-  public void setApellidos(String apellidos) {
-    this.apellidos = apellidos;
-  }
-
   public String getEmail() {
     return email;
-  }
-
-  public void setEmail(String email) {
-    this.email = email;
   }
 
 }

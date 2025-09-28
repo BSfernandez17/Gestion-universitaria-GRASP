@@ -7,7 +7,7 @@ public class CursoProfesorDTO {
   private Integer año;
   private Integer semestre;
 
-  public CursoProfesorDTO(Double ID, CursoDTO curso, ProfesorDTO profesor, Integer año, Integer semestre) {
+  public CursoProfesorDTO(Double ID, ProfesorDTO profesor, Integer año, Integer semestre, CursoDTO curso) {
     this.ID = ID;
     this.curso = curso;
     this.profesor = profesor;
@@ -19,11 +19,11 @@ public class CursoProfesorDTO {
     return ID;
   }
 
-  public CursoDTO getCurso() {
+  public CursoDTO getCursoDTO() {
     return curso;
   }
 
-  public ProfesorDTO getProfesor() {
+  public ProfesorDTO getProfesorDTO() {
     return profesor;
   }
 

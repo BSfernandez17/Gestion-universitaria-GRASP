@@ -5,12 +5,14 @@ public class Inscripcion {
   private Integer año;
   private Integer semestre;
   private Estudiante estudiante;
+  private Double ID;
 
-  public Inscripcion(Curso curso, Integer año, Integer semestre, Estudiante estudiante) {
+  public Inscripcion(Double ID, Curso curso, Integer año, Integer semestre, Estudiante estudiante) {
     this.curso = curso;
     this.año = año;
     this.semestre = semestre;
     this.estudiante = estudiante;
+    this.ID = ID;
   }
 
   @Override
@@ -22,6 +24,10 @@ public class Inscripcion {
   // Getters and Setters
   public Curso getCurso() {
     return curso;
+  }
+
+  public Double getID() {
+    return ID;
   }
 
   public Integer getAño() {

@@ -2,16 +2,17 @@ package com.mycompany.app.DTO;
 
 public class EstudianteDTO extends PersonaDTO {
   private Double codigo;
-  private String nombrePrograma;
+  private ProgramaDTO programaDTO;
   private Boolean activo;
   private Double promedio;
 
-  public EstudianteDTO(Double ID, String nombres, String apellidos, String email, Double codigo, String nombrePrograma,
+  public EstudianteDTO(Double ID, String nombres, String apellidos, String email, Double codigo,
+      ProgramaDTO programaDTO,
       Boolean activo, Double promedio) {
     super(ID, nombres, apellidos, email);
 
     this.codigo = codigo;
-    this.nombrePrograma = nombrePrograma;
+    this.programaDTO = programaDTO;
     this.activo = activo;
     this.promedio = promedio;
   }
@@ -20,8 +21,8 @@ public class EstudianteDTO extends PersonaDTO {
     return codigo;
   }
 
-  public String getNombrePrograma() {
-    return nombrePrograma;
+  public ProgramaDTO getPrograma() {
+    return programaDTO;
   }
 
   public Boolean getActivo() {

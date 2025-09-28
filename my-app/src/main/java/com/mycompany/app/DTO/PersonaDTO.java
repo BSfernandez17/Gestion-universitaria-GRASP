@@ -6,7 +6,7 @@ public class PersonaDTO {
   private String apellidos;
   private String email;
 
-  PersonaDTO(Double ID, String nombres, String apellidos, String email) {
+  public PersonaDTO(Double ID, String nombres, String apellidos, String email) {
     this.ID = ID;
     this.nombres = nombres;
     this.apellidos = apellidos;

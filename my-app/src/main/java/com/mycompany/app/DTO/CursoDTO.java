@@ -1,12 +1,12 @@
 package com.mycompany.app.DTO;
 
 public class CursoDTO {
-  private Double ID;
+  private Integer ID;
   private String nombre;
   private ProgramaDTO programa;
   private Boolean activo;
 
-  public CursoDTO(Double ID, String nombre, String descripcion, ProgramaDTO programa, Boolean activo) {
+  public CursoDTO(Integer ID, String nombre, ProgramaDTO programa, Boolean activo) {
     this.ID = ID;
     this.nombre = nombre;
 
@@ -14,7 +14,7 @@ public class CursoDTO {
     this.activo = activo;
   }
 
-  public Double getID() {
+  public Integer getID() {
     return ID;
   }
 
@@ -22,7 +22,7 @@ public class CursoDTO {
     return nombre;
   }
 
-  public ProgramaDTO getPrograma() {
+  public ProgramaDTO getProgramaDTO() {
     return programa;
   }
 

@@ -19,12 +19,8 @@ public class Curso {
   }
 
   // Getters and Setters
-  public Integer getId() {
+  public Integer getID() {
     return id;
-  }
-
-  public void setId(Integer id) {
-    this.id = id;
   }
 
   public String getNombre() {

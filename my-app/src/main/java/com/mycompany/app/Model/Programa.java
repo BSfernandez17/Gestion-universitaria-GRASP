@@ -23,7 +23,7 @@ public class Programa {
   }
 
   // Getters
-  public Double getId() {
+  public Double getID() {
     return id;
   }
 
