@@ -59,4 +59,18 @@ public class ProgramaDAO {
       ex.printStackTrace();
     }
   }
+
+  public void actualizar(ProgramaDTO p) {
+    String sql = "UPDATE programas SET nombre=?, duracion=?, registro=?, facultad_id=? WHERE id=?";
+    try (PreparedStatement ps = connection.prepareStatement(sql)) {
+      ps.setString(1, p.getNombre());
+      ps.setDouble(2, p.getDuracion());
+      ps.setDate(3, new java.sql.Date(p.getRegistro().getTime()));
+      ps.setDouble(4, p.getFacultadDTO().getID());
+      ps.setDouble(5, p.getID());
+      ps.executeUpdate();
+    } catch (SQLException ex) {
+      ex.printStackTrace();
+    }
+  }
 }

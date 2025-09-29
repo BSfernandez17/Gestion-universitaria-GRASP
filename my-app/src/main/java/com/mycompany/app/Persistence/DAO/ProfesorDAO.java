@@ -6,8 +6,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-
 import com.mycompany.app.DTO.ProfesorDTO;
+import com.mycompany.app.Model.Profesor;
 
 public class ProfesorDAO {
 
@@ -30,8 +30,8 @@ public class ProfesorDAO {
     }
   }
 
-  public List<ProfesorDTO> listar() {
-    List<ProfesorDTO> profesores = new ArrayList<>();
+  public List<Profesor> listar() {
+    List<Profesor> profesores = new ArrayList<>();
     String sql = "SELECT * FROM profesores";
     try (PreparedStatement ps = connection.prepareStatement(sql);
         ResultSet rs = ps.executeQuery()) {
@@ -41,7 +41,7 @@ public class ProfesorDAO {
         String apellidos = rs.getString("apellidos");
         String email = rs.getString("email");
         String especialidad = rs.getString("especialidad");
-        ProfesorDTO p = new ProfesorDTO(id, nombres, apellidos, email, especialidad);
+        Profesor p = new Profesor(id, nombres, apellidos, email, especialidad);
         profesores.add(p);
       }
 

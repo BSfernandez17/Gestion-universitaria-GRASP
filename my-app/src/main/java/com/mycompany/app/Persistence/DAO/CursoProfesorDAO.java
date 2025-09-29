@@ -57,4 +57,18 @@ public class CursoProfesorDAO {
       e.printStackTrace();
     }
   }
+
+  public void actualizar(CursoProfesorDTO cp) {
+    String sql = "UPDATE curso_profesor SET curso_id=?, profesor_id=?, año=?, semestre=? WHERE id=?";
+    try (PreparedStatement ps = connection.prepareStatement(sql)) {
+      ps.setDouble(1, cp.getCursoDTO().getID());
+      ps.setDouble(2, cp.getProfesorDTO().getID());
+      ps.setInt(3, cp.getAño());
+      ps.setInt(4, cp.getSemestre());
+      ps.setDouble(5, cp.getID());
+      ps.executeUpdate();
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+  }
 }

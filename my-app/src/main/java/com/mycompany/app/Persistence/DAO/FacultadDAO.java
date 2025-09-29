@@ -54,4 +54,16 @@ public class FacultadDAO {
       ex.printStackTrace();
     }
   }
+
+  public void actualizar(FacultadDTO f) {
+    String sql = "UPDATE facultades SET nombre=?, decano_id=? WHERE id=?";
+    try (PreparedStatement ps = connection.prepareStatement(sql)) {
+      ps.setString(1, f.getNombre());
+      ps.setDouble(2, f.getDecanoDTO().getID());
+      ps.setDouble(3, f.getID());
+      ps.executeUpdate();
+    } catch (SQLException ex) {
+      ex.printStackTrace();
+    }
+  }
 }

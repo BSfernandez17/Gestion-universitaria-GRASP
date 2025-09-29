@@ -1,7 +1,7 @@
 package com.mycompany.app.DTO;
 
 public class PersonaDTO {
-  private double ID;
+  private Double ID;
   private String nombres;
   private String apellidos;
   private String email;

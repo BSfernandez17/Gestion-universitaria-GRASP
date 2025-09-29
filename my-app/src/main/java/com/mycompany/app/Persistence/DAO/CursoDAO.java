@@ -55,4 +55,17 @@ public class CursoDAO {
       e.printStackTrace();
     }
   }
+
+  public void actualizar(CursoDTO c) {
+    String sql = "UPDATE cursos SET nombre=?, programa_id=?, activo=? WHERE id=?";
+    try (PreparedStatement ps = connection.prepareStatement(sql)) {
+      ps.setString(1, c.getNombre());
+      ps.setDouble(2, c.getProgramaDTO().getID());
+      ps.setBoolean(3, c.getActivo());
+      ps.setDouble(4, c.getID());
+      ps.executeUpdate();
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+  }
 }

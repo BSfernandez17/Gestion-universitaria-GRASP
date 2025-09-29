@@ -2,6 +2,8 @@ package com.mycompany.app.Controller.Mappers;
 
 import com.mycompany.app.Model.Profesor;
 import com.mycompany.app.DTO.ProfesorDTO;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ProfesorMapper {
   public static Profesor toEntity(ProfesorDTO dto) {
@@ -13,4 +15,19 @@ public class ProfesorMapper {
         entity.getTipoContrato());
   }
 
+  public static List<ProfesorDTO> toDTOList(List<Profesor> entities) {
+    List<ProfesorDTO> dtoList = new ArrayList<>();
+    for (Profesor entity : entities) {
+      dtoList.add(toDTO(entity));
+    }
+    return dtoList;
+  }
+
+  public static List<Profesor> toEntityList(List<ProfesorDTO> dtos) {
+    List<Profesor> entityList = new ArrayList<>();
+    for (ProfesorDTO dto : dtos) {
+      entityList.add(toEntity(dto));
+    }
+    return entityList;
+  }
 }

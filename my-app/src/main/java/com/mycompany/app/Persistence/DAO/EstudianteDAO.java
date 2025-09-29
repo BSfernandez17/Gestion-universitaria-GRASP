@@ -64,4 +64,21 @@ public class EstudianteDAO {
       ex.printStackTrace();
     }
   }
+
+  public void actualizar(EstudianteDTO e) {
+    String sql = "UPDATE estudiantes SET nombres=?, apellidos=?, email=?, codigo=?, programa_id=?, activo=?, promedio=? WHERE id=?";
+    try (PreparedStatement ps = connection.prepareStatement(sql)) {
+      ps.setString(1, e.getNombres());
+      ps.setString(2, e.getApellidos());
+      ps.setString(3, e.getEmail());
+      ps.setDouble(4, e.getCodigo());
+      ps.setDouble(5, e.getPrograma().getID());
+      ps.setBoolean(6, e.getActivo());
+      ps.setDouble(7, e.getPromedio());
+      ps.setDouble(8, e.getID());
+      ps.executeUpdate();
+    } catch (SQLException ex) {
+      ex.printStackTrace();
+    }
+  }
 }
