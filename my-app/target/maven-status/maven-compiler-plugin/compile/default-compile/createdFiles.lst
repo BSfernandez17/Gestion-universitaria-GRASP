@@ -4,6 +4,7 @@ com/mycompany/app/DTO/CursoProfesorDTO.class
 com/mycompany/app/Persistence/DAO/CursosInscritosDAO.class
 com/mycompany/app/Controller/Mappers/ProfesorMapper.class
 com/mycompany/app/Services/CursosProfesores.class
+com/mycompany/app/seeders/DatabaseSeed.class
 com/mycompany/app/Model/Estudiante.class
 com/mycompany/app/Persistence/adapters/DatabaseConfigOracle.class
 com/mycompany/app/Persistence/DAO/FacultadDAO.class
@@ -11,6 +12,7 @@ com/mycompany/app/Controller/Mappers/InscripcionMappper.class
 com/mycompany/app/Persistence/DAO/InscripcionesPersonasDAO.class
 com/mycompany/app/DTO/ProgramaDTO.class
 com/mycompany/app/Controller/ServicesClass/ProgramaService.class
+com/mycompany/app/ConnectionDb.class
 com/mycompany/app/DTO/CursoDTO.class
 com/mycompany/app/DTO/InscripcionDTO.class
 com/mycompany/app/Controller/Mappers/CursoProfesorMapper.class
@@ -28,6 +30,7 @@ com/mycompany/app/Controller/Mappers/PersonaMapper.class
 com/mycompany/app/Controller/ProgramaController.class
 com/mycompany/app/Services/CursosInscritos.class
 com/mycompany/app/Model/Inscripcion.class
+com/mycompany/app/seeders/DatabaseOracleSeed.class
 com/mycompany/app/Controller/ServicesClass/FacultadService.class
 com/mycompany/app/Controller/Mappers/CursoMapper.class
 com/mycompany/app/Model/Facultad.class
