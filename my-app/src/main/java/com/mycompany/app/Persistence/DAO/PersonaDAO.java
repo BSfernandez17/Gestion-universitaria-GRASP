@@ -16,13 +16,38 @@ public class PersonaDAO {
   public PersonaDAO(Connection connection) {
     this.connection = connection;
   }
+    public Persona buscarPorId(Double id) {
+        Persona persona = null;
+        String sql = "SELECT * FROM personas WHERE id = ?";
 
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setDouble(1, id);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                Double personaId = rs.getDouble("id");
+                String nombres = rs.getString("nombre");
+                String apellidos = rs.getString("apellido");
+                String email = rs.getString("email");
+
+                persona = new Persona(personaId, nombres, apellidos, email);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return persona;
+    }
   public void insertar(PersonaDTO p) {
-    String pStatement = "SQL INSERT INTO personas (nombres, apellidos, email) VALUES (?, ?, ?)";
+    String pStatement = "SQL INSERT INTO personas (id, nombre, apellido, email) VALUES (?, ?, ?, ?)";
     try (PreparedStatement ps = connection.prepareStatement(pStatement)) {
-      ps.setString(1, p.getNombres());
-      ps.setString(2, p.getApellidos());
-      ps.setString(3, p.getEmail());
+
+
+      ps.setDouble(1, IdGenerator.generateId());
+      ps.setString(2, p.getNombres());
+      ps.setString(3, p.getApellidos());
+      ps.setString(4, p.getEmail());
       ps.executeUpdate();
     } catch (SQLException e) {
       e.printStackTrace();
@@ -36,8 +61,8 @@ public class PersonaDAO {
         ResultSet rs = ps.executeQuery()) {
       while (rs.next()) {
         Double id = rs.getDouble("id");
-        String nombres = rs.getString("nombres");
-        String apellidos = rs.getString("apellidos");
+        String nombres = rs.getString("nombre");
+        String apellidos = rs.getString("apellido");
         String email = rs.getString("email");
         Persona p = new Persona(id, nombres, apellidos, email);
         personas.add(p);
@@ -61,7 +86,7 @@ public class PersonaDAO {
   }
 
   public void actualizar(PersonaDTO pDto) {
-    String sql = "UPDATE personas SET nombres=?, apellidos=?, email=? WHERE id=?";
+    String sql = "UPDATE personas SET nombre=?, apellido=?, email=? WHERE id=?";
 
     try (PreparedStatement ps = connection.prepareStatement(sql)) {
       ps.setString(1, pDto.getNombres());

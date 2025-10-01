@@ -34,4 +34,10 @@ public class CursoProfesorDTO {
   public Integer getSemestre() {
     return semestre;
   }
+  @Override
+public String toString() {
+    return curso.getNombre() + " - " + profesor.getNombres() + " " + profesor.getApellidos() +
+          " (" + profesor.getEmail() + ") Año: " + año + " Semestre: " + semestre;
+}
+
 }

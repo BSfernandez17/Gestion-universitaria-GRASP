@@ -2,6 +2,8 @@ package com.mycompany.app.Controller.Mappers;
 
 import com.mycompany.app.Model.Programa;
 import com.mycompany.app.DTO.ProgramaDTO;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ProgramaMapper {
   public static Programa toEntity(ProgramaDTO dto) {
@@ -12,5 +14,21 @@ public class ProgramaMapper {
   public static ProgramaDTO toDTO(Programa entity) {
     return new ProgramaDTO(entity.getID(), entity.getNombre(), entity.getDuracion(), entity.getRegistro(),
         FacultadMapper.toDTO(entity.getFacultad()));
+  }
+
+  public static List<ProgramaDTO> toDTOList(List<Programa> entities) {
+    List<ProgramaDTO> dtoList = new ArrayList<>();
+    for (Programa entity : entities) {
+      dtoList.add(toDTO(entity));
+    }
+    return dtoList;
+  }
+
+  public static List<Programa> toEntityList(List<ProgramaDTO> dtos) {
+    List<Programa> entityList = new ArrayList<>();
+    for (ProgramaDTO dto : dtos) {
+      entityList.add(toEntity(dto));
+    }
+    return entityList;
   }
 }

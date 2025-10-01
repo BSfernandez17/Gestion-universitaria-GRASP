@@ -57,4 +57,18 @@ public class InscripcionDAO {
       e.printStackTrace();
     }
   }
+
+  public void actualizar(InscripcionDTO i) {
+    String sql = "UPDATE inscripciones SET curso_id=?, estudiante_id=?, año=?, semestre=? WHERE id=?";
+    try (PreparedStatement ps = connection.prepareStatement(sql)) {
+      ps.setDouble(1, i.getCursoDTO().getID());
+      ps.setDouble(2, i.getEstudianteDTO().getID());
+      ps.setInt(3, i.getAño());
+      ps.setInt(4, i.getSemestre());
+      ps.setDouble(5, i.getID());
+      ps.executeUpdate();
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+  }
 }

@@ -5,6 +5,7 @@ import java.util.Properties;
 import com.mycompany.app.Persistence.adapters.*;
 
 public class DataBaseFactory {
+
   public static DataBaseAdapter create(Properties props) {
 
     String type = props.getProperty("db.type").toLowerCase();

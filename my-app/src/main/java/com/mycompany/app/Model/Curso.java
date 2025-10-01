@@ -1,12 +1,12 @@
 package com.mycompany.app.Model;
 
 public class Curso {
-  private Integer id;
+  private Double id;
   private String nombre;
   private Programa programa;
   private Boolean activo;
 
-  public Curso(Integer id, String nombre, Programa programa, Boolean activo) {
+  public Curso(Double id, String nombre, Programa programa, Boolean activo) {
     this.id = id;
     this.nombre = nombre;
     this.programa = programa;
@@ -19,7 +19,7 @@ public class Curso {
   }
 
   // Getters and Setters
-  public Integer getID() {
+  public Double getID() {
     return id;
   }
 

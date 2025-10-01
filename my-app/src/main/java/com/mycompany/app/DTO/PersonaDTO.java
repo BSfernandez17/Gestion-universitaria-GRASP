@@ -1,7 +1,7 @@
 package com.mycompany.app.DTO;
 
 public class PersonaDTO {
-  private double ID;
+  private Double ID;
   private String nombres;
   private String apellidos;
   private String email;
@@ -11,6 +11,10 @@ public class PersonaDTO {
     this.nombres = nombres;
     this.apellidos = apellidos;
     this.email = email;
+  }
+
+public String toString() {
+    return ID + " - " + nombres + " " + apellidos + " (" + email + ")";
   }
 
   public Double getID() {

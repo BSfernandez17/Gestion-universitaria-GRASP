@@ -6,8 +6,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-
 import com.mycompany.app.DTO.ProfesorDTO;
+import com.mycompany.app.Model.Persona;
+import com.mycompany.app.Model.Profesor;
 
 public class ProfesorDAO {
 
@@ -29,9 +30,33 @@ public class ProfesorDAO {
       e.printStackTrace();
     }
   }
+public Profesor buscarPorId(Double id) {
+    Profesor profesor = null;
+   String sql = "SELECT p.id, p.nombre, p.apellido, p.email, pr.tipoContrato " +
+             "FROM profesores pr JOIN personas p ON pr.persona_id = p.id WHERE pr.id = ?";
 
-  public List<ProfesorDTO> listar() {
-    List<ProfesorDTO> profesores = new ArrayList<>();
+    try (PreparedStatement ps = connection.prepareStatement(sql)) {
+        ps.setDouble(1, id);
+        ResultSet rs = ps.executeQuery();
+
+        if (rs.next()) {
+            profesor = new Profesor(
+                rs.getDouble("id"),
+                rs.getString("nombre"),
+                rs.getString("apellido"),
+                rs.getString("email"),
+                rs.getString("tipoContrato")
+            );
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+    return profesor;
+}
+
+
+  public List<Profesor> listar() {
+    List<Profesor> profesores = new ArrayList<>();
     String sql = "SELECT * FROM profesores";
     try (PreparedStatement ps = connection.prepareStatement(sql);
         ResultSet rs = ps.executeQuery()) {
@@ -41,7 +66,7 @@ public class ProfesorDAO {
         String apellidos = rs.getString("apellidos");
         String email = rs.getString("email");
         String especialidad = rs.getString("especialidad");
-        ProfesorDTO p = new ProfesorDTO(id, nombres, apellidos, email, especialidad);
+        Profesor p = new Profesor(id, nombres, apellidos, email, especialidad);
         profesores.add(p);
       }
 
