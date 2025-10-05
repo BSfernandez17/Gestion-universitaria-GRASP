@@ -34,4 +34,10 @@ public class InscripcionDTO {
   public Integer getSemestre() {
     return semestre;
   }
+
+  @Override
+  public String toString() {
+    return "Inscripcion (ID: " + ID + ") - Estudiante: " + estudiante.getNombres() + " " + estudiante.getApellidos()
+        + " | Curso: " + curso.getNombre() + " | Periodo: " + año + "-" + semestre;
+  }
 }

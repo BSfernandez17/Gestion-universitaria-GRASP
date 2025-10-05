@@ -8,7 +8,7 @@ import java.util.List;
 public class InscripcionService {
   InscripcionDAO inscripcionDAO;
 
-  InscripcionService(InscripcionDAO inscripcionDAO) {
+  public InscripcionService(InscripcionDAO inscripcionDAO) {
     this.inscripcionDAO = inscripcionDAO;
   }
 

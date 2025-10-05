@@ -29,4 +29,9 @@ public class CursoDTO {
   public Boolean getActivo() {
     return activo;
   }
+
+  @Override
+  public String toString() {
+    return "Curso: " + nombre + " (ID: " + ID + ")";
+  }
 }

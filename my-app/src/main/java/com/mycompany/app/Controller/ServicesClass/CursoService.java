@@ -8,7 +8,7 @@ import java.util.List;
 public class CursoService {
   CursoDAO cursoDAO;
 
-  CursoService(CursoDAO cursoDAO) {
+  public CursoService(CursoDAO cursoDAO) {
     this.cursoDAO = cursoDAO;
   }
 

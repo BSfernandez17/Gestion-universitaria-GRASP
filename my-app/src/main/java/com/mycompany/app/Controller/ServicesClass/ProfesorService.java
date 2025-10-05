@@ -8,7 +8,7 @@ import java.util.List;
 public class ProfesorService {
   ProfesorDAO profesorDAO;
 
-  ProfesorService(ProfesorDAO profesorDAO) {
+  public ProfesorService(ProfesorDAO profesorDAO) {
     this.profesorDAO = profesorDAO;
   }
 

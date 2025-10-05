@@ -33,12 +33,10 @@ public class DatabaseSeed {
 
       // --- FACULTADES ---
       ps = conn.prepareStatement(
-          "INSERT INTO facultades (id, nombre, decano_id, telefono, email) VALUES (?, ?, ?, ?, ?)");
+          "INSERT INTO facultades (id, nombre, decano_id) VALUES (?, ?, ?)");
       ps.setDouble(1, 2001);
       ps.setString(2, "Facultad de Ciencias");
       ps.setDouble(3, 1001); // decano
-      ps.setString(4, "1234567");
-      ps.setString(5, "ciencias@uni.com");
       ps.executeUpdate();
 
       // --- PROGRAMAS ---

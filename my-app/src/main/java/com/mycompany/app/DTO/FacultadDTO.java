@@ -23,4 +23,9 @@ public class FacultadDTO {
   public PersonaDTO getDecanoDTO() {
     return decanoDTO;
   }
+
+  @Override
+  public String toString() {
+    return "Facultad: " + nombre + " (ID: " + ID + ")";
+  }
 }

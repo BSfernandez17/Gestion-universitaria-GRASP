@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import com.mycompany.app.Model.Estudiante;
+import com.mycompany.app.Model.Persona;
 import com.mycompany.app.DTO.EstudianteDTO;
 import com.mycompany.app.Persistence.DAO.ProgramaDAO;
 import com.mycompany.app.Model.Programa;
@@ -18,7 +19,108 @@ public class EstudianteDAO {
   public EstudianteDAO(Connection connection) {
     this.connection = connection;
   }
+  
+public Estudiante buscarPorCodigo(Double codigo) {
+    String sql = """
+        SELECT 
+            e.id AS estudiante_id,
+            e.codigo,
+            e.promedio,
+            e.activo,
+            p.id AS persona_id,
+            p.nombre,
+            p.apellido,
+            p.email,
+            pr.id as programa_id
+        FROM estudiantes e
+        JOIN personas p ON e.persona_id = p.id
+        JOIN programas pr ON e.programa_id = pr.id
+        WHERE e.codigo = ?
+        """;
+    ProgramaDAO programaDAO = new ProgramaDAO(connection);
+    try (PreparedStatement ps = connection.prepareStatement(sql)) {
+        ps.setDouble(1, codigo);
+        try (ResultSet rs = ps.executeQuery()) {
+            if (rs.next()) {
+                Programa programa = programaDAO.buscarPorId(rs.getDouble("programa_id"));
+                Estudiante estudiante = new Estudiante(
+                    rs.getDouble("estudiante_id"),
+                    rs.getString("nombre"),
+                    rs.getString("apellido"),
+                    rs.getString("email"),
+                    rs.getDouble("codigo"),
+                    programa,
+                    rs.getBoolean("activo"),
+                    rs.getDouble("promedio")
+                );
 
+                return estudiante;
+            }
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+
+    return null; // Si no se encontró
+}
+
+
+
+  
+  public Estudiante buscarPorNombre(String nombre){
+    String sql = "SELECT e.id AS estudiante_id, p.nombre, p.apellido, p.email, pr.id AS programa, e.codigo, e.promedio, e.activo " +
+           "FROM estudiantes e " +
+           "JOIN personas p ON e.persona_id = p.id " +
+           "JOIN programas pr ON e.programa_id = pr.id " +
+           "WHERE p.nombre = ?";
+    ProgramaDAO programaDAO = new ProgramaDAO(connection);
+    try (PreparedStatement ps = connection.prepareStatement(sql)) {
+      ps.setString(1, nombre);
+      try (ResultSet rs = ps.executeQuery()) {
+        if (rs.next()) {
+          Double id = rs.getDouble("estudiante_id");
+          String nombres = rs.getString("nombre");
+          String apellidos = rs.getString("apellido");
+          String email = rs.getString("email");
+          Double codigo = rs.getDouble("codigo");
+          Boolean activo = rs.getBoolean("activo");
+          Double promedio = rs.getDouble("promedio");
+          Programa programa = programaDAO.buscarPorId(rs.getDouble("programa"));
+          return new Estudiante(id, nombres, apellidos, email, codigo, programa, activo, promedio);
+        }
+      }
+    } catch (SQLException ex) {
+      ex.printStackTrace();
+    }
+    return null;
+  }
+  public Estudiante buscarPorID(double ID){
+    String sql = "SELECT e.id AS estudiante_id, p.nombre, p.apellido, p.email, pr.id AS programa, e.codigo, e.promedio, e.activo " +
+           "FROM estudiantes e " +
+           "JOIN personas p ON e.persona_id = p.id " +
+           "JOIN programas pr ON e.programa_id = pr.id " +
+           "WHERE e.id = ?";
+    ProgramaDAO programaDAO = new ProgramaDAO(connection);
+    try (PreparedStatement ps = connection.prepareStatement(sql)) {
+      ps.setDouble(1, ID);
+      try (ResultSet rs = ps.executeQuery()) {
+        if (rs.next()) {
+          Double id = rs.getDouble("estudiante_id");
+          String nombres = rs.getString("nombre");
+          String apellidos = rs.getString("apellido");
+          String email = rs.getString("email");
+          Double codigo = rs.getDouble("codigo");
+          Boolean activo = rs.getBoolean("activo");
+          Double promedio = rs.getDouble("promedio");
+          Programa programa = programaDAO.buscarPorId(rs.getDouble("programa"));
+          return new Estudiante(id, nombres, apellidos, email, codigo, programa, activo, promedio);
+        }
+      }
+    } catch (SQLException ex) {
+      ex.printStackTrace();
+    }
+    return null;
+  }
   public void insertar(EstudianteDTO e) {
     ProgramaDAO programaDAO = new ProgramaDAO(connection);
     String sql = "INSERT INTO estudiantes (id,persona_id, codigo, programa_id, activo, promedio) VALUES (?, ?, ?, ?,?,?)";

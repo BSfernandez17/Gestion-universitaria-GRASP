@@ -37,4 +37,8 @@ public class ProgramaDTO {
     return facultadDTO;
   }
 
+  @Override
+  public String toString() {
+    return "Programa: " + nombre + " (ID: " + ID + ")";
+  }
 }
