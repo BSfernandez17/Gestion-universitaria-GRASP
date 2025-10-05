@@ -47,16 +47,16 @@ public class DatabaseConfig {
               "FOREIGN KEY (persona_id) REFERENCES personas(id)" +
               ")");
 
-      // Tabla Estudiante (actualizada con referencia a Programa)
+      // Tabla Estudiante: usamos la misma clave que Personas (id) y la referenciamos
+      // esto implementa una relación 1:1 donde estudiantes.id == personas.id
       stmt.execute(
           "CREATE TABLE IF NOT EXISTS estudiantes (" +
               "id DOUBLE PRIMARY KEY," +
-              "persona_id DOUBLE," +
               "codigo DOUBLE," +
               "programa_id DOUBLE," +
               "activo BOOLEAN," +
               "promedio DOUBLE," +
-              "FOREIGN KEY (persona_id) REFERENCES personas(id)," +
+              "FOREIGN KEY (id) REFERENCES personas(id)," +
               "FOREIGN KEY (programa_id) REFERENCES programas(id)" +
               ")");
 

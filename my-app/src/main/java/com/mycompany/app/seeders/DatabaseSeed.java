@@ -80,19 +80,19 @@ public class DatabaseSeed {
 
 
             // --- ESTUDIANTES ---
+            // Ahora usamos el mismo id que la persona (estudiantes.id == personas.id)
             ps = conn.prepareStatement(
-                "INSERT INTO estudiantes (id, persona_id, codigo, programa_id, activo, promedio) VALUES (?, ?, ?, ?, ?, ?)"
+                "INSERT INTO estudiantes (id, codigo, programa_id, activo, promedio) VALUES (?, ?, ?, ?, ?)"
             );
             Object[][] estudiantes = {
-                {5001.0, 1003.0, 2025001.0, 3001.0, true, 4.5}
+                {1003.0, 2025001.0, 3001.0, true, 4.5}
             };
             for (Object[] est : estudiantes) {
-                ps.setDouble(1, (Double)est[0]);
+                ps.setDouble(1, (Double)est[0]); // id igual a persona_id
                 ps.setDouble(2, (Double)est[1]);
                 ps.setDouble(3, (Double)est[2]);
-                ps.setDouble(4, (Double)est[3]);
-                ps.setBoolean(5, (Boolean)est[4]);
-                ps.setDouble(6, (Double)est[5]);
+                ps.setBoolean(4, (Boolean)est[3]);
+                ps.setDouble(5, (Double)est[4]);
                 ps.executeUpdate();
             }
 
@@ -134,7 +134,7 @@ public class DatabaseSeed {
                 "INSERT INTO inscripciones (id, curso_id, estudiante_id, año, semestre) VALUES (?, ?, ?, ?, ?)"
             );
             Object[][] inscripciones = {
-                {8001.0, 6001.0, 5001.0, 2025, 1}
+                {8001.0, 6001.0, 1003.0, 2025, 1}
             };
             for (Object[] ins : inscripciones) {
                 ps.setDouble(1, (Double)ins[0]);

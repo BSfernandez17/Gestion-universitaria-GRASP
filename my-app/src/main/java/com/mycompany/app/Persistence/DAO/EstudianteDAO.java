@@ -18,16 +18,27 @@ public class EstudianteDAO {
   }
 
   public void insertar(EstudianteDTO e) {
-    String sql = "INSERT INTO estudiantes (nombres, apellidos, email, codigo, programa_id, activo, promedio) VALUES (?, ?, ?, ?, ?, ?, ?)";
-    try (PreparedStatement ps = connection.prepareStatement(sql)) {
-      ps.setString(1, e.getNombres());
-      ps.setString(2, e.getApellidos());
-      ps.setString(3, e.getEmail());
-      ps.setDouble(4, e.getCodigo());
-      ps.setDouble(5, e.getPrograma().getID());
-      ps.setBoolean(6, e.getActivo());
-      ps.setDouble(7, e.getPromedio());
-      ps.executeUpdate();
+    // Insert person first (persona.id), then insert estudiante using the same id
+    try {
+      // personas insert (if not exists)
+      String upsertPersona = "INSERT OR IGNORE INTO personas (id, nombre, apellido, email) VALUES (?, ?, ?, ?)";
+      try (PreparedStatement ps1 = connection.prepareStatement(upsertPersona)) {
+        ps1.setDouble(1, e.getID());
+        ps1.setString(2, e.getNombres());
+        ps1.setString(3, e.getApellidos());
+        ps1.setString(4, e.getEmail());
+        ps1.executeUpdate();
+      }
+
+      String sqlEst = "INSERT INTO estudiantes (id, codigo, programa_id, activo, promedio) VALUES (?, ?, ?, ?, ?)";
+      try (PreparedStatement ps2 = connection.prepareStatement(sqlEst)) {
+        ps2.setDouble(1, e.getID());
+        ps2.setDouble(2, e.getCodigo());
+        if (e.getPrograma() != null) ps2.setDouble(3, e.getPrograma().getID()); else ps2.setNull(3, java.sql.Types.DOUBLE);
+        ps2.setBoolean(4, e.getActivo());
+        ps2.setDouble(5, e.getPromedio());
+        ps2.executeUpdate();
+      }
     } catch (SQLException ex) {
       ex.printStackTrace();
     }
@@ -36,8 +47,8 @@ public class EstudianteDAO {
   public List<Estudiante> listar() {
     List<Estudiante> estudiantes = new ArrayList<>();
     // Join estudiantes with personas to get human-readable fields inserted by the seeders
-    String sql = "SELECT e.id AS id, p.nombre AS nombres, p.apellido AS apellidos, p.email AS email, e.codigo AS codigo, e.activo AS activo, e.promedio AS promedio "
-        + "FROM estudiantes e LEFT JOIN personas p ON e.persona_id = p.id";
+  String sql = "SELECT e.id AS id, p.nombre AS nombres, p.apellido AS apellidos, p.email AS email, e.codigo AS codigo, e.activo AS activo, e.promedio AS promedio "
+    + "FROM estudiantes e LEFT JOIN personas p ON e.id = p.id";
     try (PreparedStatement ps = connection.prepareStatement(sql);
         ResultSet rs = ps.executeQuery()) {
       while (rs.next()) {
@@ -68,17 +79,26 @@ public class EstudianteDAO {
   }
 
   public void actualizar(EstudianteDTO e) {
-    String sql = "UPDATE estudiantes SET nombres=?, apellidos=?, email=?, codigo=?, programa_id=?, activo=?, promedio=? WHERE id=?";
-    try (PreparedStatement ps = connection.prepareStatement(sql)) {
-      ps.setString(1, e.getNombres());
-      ps.setString(2, e.getApellidos());
-      ps.setString(3, e.getEmail());
-      ps.setDouble(4, e.getCodigo());
-      ps.setDouble(5, e.getPrograma().getID());
-      ps.setBoolean(6, e.getActivo());
-      ps.setDouble(7, e.getPromedio());
-      ps.setDouble(8, e.getID());
-      ps.executeUpdate();
+    // Update persona and estudiante tables
+    try {
+      String updPersona = "UPDATE personas SET nombre=?, apellido=?, email=? WHERE id=?";
+      try (PreparedStatement ps1 = connection.prepareStatement(updPersona)) {
+        ps1.setString(1, e.getNombres());
+        ps1.setString(2, e.getApellidos());
+        ps1.setString(3, e.getEmail());
+        ps1.setDouble(4, e.getID());
+        ps1.executeUpdate();
+      }
+
+      String updEst = "UPDATE estudiantes SET codigo=?, programa_id=?, activo=?, promedio=? WHERE id=?";
+      try (PreparedStatement ps2 = connection.prepareStatement(updEst)) {
+        ps2.setDouble(1, e.getCodigo());
+        if (e.getPrograma() != null) ps2.setDouble(2, e.getPrograma().getID()); else ps2.setNull(2, java.sql.Types.DOUBLE);
+        ps2.setBoolean(3, e.getActivo());
+        ps2.setDouble(4, e.getPromedio());
+        ps2.setDouble(5, e.getID());
+        ps2.executeUpdate();
+      }
     } catch (SQLException ex) {
       ex.printStackTrace();
     }
