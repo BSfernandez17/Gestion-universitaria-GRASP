@@ -43,9 +43,6 @@
       <artifactId>junit-jupiter-params</artifactId>
       <scope>test</scope>
     </dependency>
-<<<<<<< HEAD
-   <dependency>
-=======
 
     <!-- ✅ JavaFX -->
     <dependency>
@@ -54,7 +51,6 @@
       <version>20.0.2</version>
     </dependency>
     <dependency>
->>>>>>> feature/oracle-integration
       <groupId>com.h2database</groupId>
       <artifactId>h2</artifactId>
       <version>2.2.224</version>
@@ -70,10 +66,6 @@
       <artifactId>ojdbc11</artifactId>
       <version>23.5.0.24.07</version>
     </dependency>
-<<<<<<< HEAD
-
-=======
->>>>>>> feature/oracle-integration
   </dependencies>
 
   <!-- ✅ Plugins -->

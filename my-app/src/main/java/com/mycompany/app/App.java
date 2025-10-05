@@ -4,12 +4,6 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.sql.Connection;
 import java.util.Properties;
-<<<<<<< HEAD
-
-import com.mycompany.app.Controller.CursoProfesorController;
-import com.mycompany.app.Controller.ServicesClass.CursoProfesorService;
-import com.mycompany.app.Persistence.DAO.CursoProfesorDAO;
-=======
 import com.mycompany.app.Controller.ServicesClass.FacultadService;
 import com.mycompany.app.Controller.ServicesClass.InscripcionService;
 import com.mycompany.app.Controller.CursoController;
@@ -42,18 +36,10 @@ import com.mycompany.app.Persistence.DAO.ProgramaDAO;
 import com.mycompany.app.Controller.ProgramaController;
 import com.mycompany.app.Controller.ServicesClass.ProgramaService;
 import com.mycompany.app.Persistence.DAO.CursoDAO;
->>>>>>> feature/oracle-integration
 
 public class App {
   public static void main(String[] args) {
     Connection conn = ConnectionDb.getConnection();
-<<<<<<< HEAD
-    CursoProfesorDAO cursoProfesorDAO = new CursoProfesorDAO(conn);
-    CursoProfesorService cursoProfesorService = new CursoProfesorService(cursoProfesorDAO);
-    CursoProfesorController cursoProfesorController = new CursoProfesorController(cursoProfesorService);
-
-  }
-=======
     PersonaDAO personaDAO = new PersonaDAO(conn);
     PersonaService personaService = new PersonaService(personaDAO);
     PersonaController personaController = new PersonaController(personaService);
@@ -162,5 +148,4 @@ public class App {
   System.out.println("LISTA CON CURSO PROFESOR NUEVO:");
   cursoProfesorController.listar().forEach(System.out::println);
 }
->>>>>>> feature/oracle-integration
 }
