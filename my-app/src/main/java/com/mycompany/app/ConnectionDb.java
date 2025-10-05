@@ -27,18 +27,16 @@ public class ConnectionDb {
                 // ⚙️ URL de la base de datos (ajusta según tu entorno)
                 String url = "jdbc:sqlite:database.db"; // Ejemplo con SQLite local
                 connection = DriverManager.getConnection(url);
-                System.out.println("✅ Conexión establecida con la base de datos.");
                 // Inicializar esquema de la base de datos (crear tablas si no existen)
                 try {
                     DatabaseConfig.init(connection);
                 } catch (Exception e) {
-                    System.err.println("⚠️ Error al inicializar esquema DB: " + e.getMessage());
+                    System.err.println("Error al inicializar esquema DB: " + e.getMessage());
                     e.printStackTrace();
                 }
-                System.out.println("ℹ️ Esquema DB inicializado (si fue necesario). No se ejecuta automáticamente el seed.");
             }
         } catch (Exception e) {
-            System.err.println("❌ Error al conectar con la base de datos: " + e.getMessage());
+            System.err.println("Error al conectar con la base de datos: " + e.getMessage());
             e.printStackTrace();
         }
         return connection;
@@ -51,7 +49,6 @@ public class ConnectionDb {
         try {
             if (connection != null && !connection.isClosed()) {
                 connection.close();
-                System.out.println("🔒 Conexión cerrada correctamente.");
             }
         } catch (Exception e) {
             System.err.println("⚠️ Error al cerrar la conexión: " + e.getMessage());

@@ -11,11 +11,11 @@ public class MainFX extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        System.out.println("[DEBUG] MainFX.start() - initializing MainMenuView");
+    // Application startup
         // Ensure seed data is present (run once at startup)
         try {
             Connection conn = ConnectionDb.getConnection();
-            System.out.println("[DEBUG] Running DatabaseSeed.seed(conn)");
+            // Run database seed (if necessary)
             DatabaseSeed.seed(conn);
             try (java.sql.Statement st = conn.createStatement()) {
                 java.sql.ResultSet r1 = st.executeQuery("SELECT COUNT(*) AS c FROM personas");
@@ -23,7 +23,7 @@ public class MainFX extends Application {
                 java.sql.ResultSet r2 = st.executeQuery("SELECT COUNT(*) AS c FROM estudiantes");
                 if (r2.next()) System.out.println("[DB] estudiantes=" + r2.getInt("c"));
             } catch (Exception ex) {
-                System.err.println("[DEBUG] Error counting rows: " + ex.getMessage());
+                // intentionally silent during normal startup; errors will be logged if they occur
             }
         } catch (Exception e) {
             System.err.println("[ERROR] Failed to run seed: " + e.getMessage());
@@ -32,7 +32,7 @@ public class MainFX extends Application {
 
         MainMenuView menu = new MainMenuView();
         menu.show(stage);
-        System.out.println("[DEBUG] MainFX.start() - MainMenuView.show() returned");
+    // Main menu shown
     }
 
     public static void main(String[] args) {

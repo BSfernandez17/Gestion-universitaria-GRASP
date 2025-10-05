@@ -13,7 +13,7 @@ import com.mycompany.app.view.PersonaView;
 
 public class MainMenuView {
     public void show(Stage stage) {
-        System.out.println("[DEBUG] MainMenuView.show() - entering");
+    // entering MainMenuView.show()
         // Título
         Label title = new Label("Gestión Universitaria");
         title.getStyleClass().add("title-label");
