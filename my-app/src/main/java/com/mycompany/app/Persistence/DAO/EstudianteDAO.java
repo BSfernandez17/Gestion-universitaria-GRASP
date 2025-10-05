@@ -187,11 +187,7 @@ public Estudiante buscarPorCodigo(Double codigo) {
   }
 
   public void actualizar(EstudianteDTO e) {
-<<<<<<< HEAD
-    String sql = "UPDATE estudiantes SET nombres=?, apellidos=?, email=?, codigo=?, programa_id=?, activo=?, promedio=? WHERE id=?";
-=======
     String sql = "UPDATE estudiantes SET nombre=?, apellido=?, email=?, codigo=?, programa_id=?, activo=?, promedio=? WHERE id=?";
->>>>>>> feature/oracle-integration
     try (PreparedStatement ps = connection.prepareStatement(sql)) {
       ps.setString(1, e.getNombres());
       ps.setString(2, e.getApellidos());

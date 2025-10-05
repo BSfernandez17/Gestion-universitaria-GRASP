@@ -7,10 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import com.mycompany.app.DTO.ProfesorDTO;
-<<<<<<< HEAD
-=======
 import com.mycompany.app.Model.Persona;
->>>>>>> feature/oracle-integration
 import com.mycompany.app.Model.Profesor;
 
 public class ProfesorDAO {
@@ -42,11 +39,6 @@ public Profesor buscarPorId(Double id) {
    String sql = "SELECT p.id, p.nombre, p.apellido, p.email, pr.tipoContrato " +
              "FROM profesores pr JOIN personas p ON pr.persona_id = p.id WHERE pr.id = ?";
 
-<<<<<<< HEAD
-  public List<Profesor> listar() {
-    List<Profesor> profesores = new ArrayList<>();
-    String sql = "SELECT * FROM profesores";
-=======
     try (PreparedStatement ps = connection.prepareStatement(sql)) {
         ps.setDouble(1, id);
         ResultSet rs = ps.executeQuery();
@@ -102,7 +94,6 @@ public Profesor buscarPorEmail(String email){
             "    profesores pr " + 
             "JOIN " + 
             "    personas p ON pr.persona_id = p.id;";
->>>>>>> feature/oracle-integration
     try (PreparedStatement ps = connection.prepareStatement(sql);
         ResultSet rs = ps.executeQuery()) {
       while (rs.next()) {
@@ -110,14 +101,9 @@ public Profesor buscarPorEmail(String email){
         String nombres = rs.getString("nombre");
         String apellidos = rs.getString("apellido");
         String email = rs.getString("email");
-<<<<<<< HEAD
-        String especialidad = rs.getString("especialidad");
-        Profesor p = new Profesor(id, nombres, apellidos, email, especialidad);
-=======
    
         String TipoContrato=rs.getString("tipoContrato");
         Profesor p = new Profesor(id, nombres, apellidos, email, TipoContrato);
->>>>>>> feature/oracle-integration
         profesores.add(p);
       }
 

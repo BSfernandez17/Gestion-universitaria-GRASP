@@ -1,11 +1,7 @@
 package com.mycompany.app.DTO;
 
 public class PersonaDTO {
-<<<<<<< HEAD
-  private Double ID;
-=======
   private Double id;
->>>>>>> feature/oracle-integration
   private String nombres;
   private String apellidos;
   private String email;

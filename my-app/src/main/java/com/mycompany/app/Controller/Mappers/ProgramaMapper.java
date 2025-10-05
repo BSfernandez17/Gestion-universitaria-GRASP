@@ -20,15 +20,10 @@ public class ProgramaMapper {
 
   public static List<ProgramaDTO> toDTOList(List<Programa> entities) {
     List<ProgramaDTO> dtoList = new ArrayList<>();
-<<<<<<< HEAD
-    for (Programa entity : entities) {
-      dtoList.add(toDTO(entity));
-=======
 
     for (Programa entity : entities) {
       if (entity != null)
         dtoList.add(toDTO(entity));
->>>>>>> feature/oracle-integration
     }
     return dtoList;
   }

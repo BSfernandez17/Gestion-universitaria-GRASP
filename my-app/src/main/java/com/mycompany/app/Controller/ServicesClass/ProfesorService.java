@@ -8,11 +8,7 @@ import java.util.List;
 public class ProfesorService {
   ProfesorDAO profesorDAO;
 
-<<<<<<< HEAD
-  ProfesorService(ProfesorDAO profesorDAO) {
-=======
   public ProfesorService(ProfesorDAO profesorDAO) {
->>>>>>> feature/oracle-integration
     this.profesorDAO = profesorDAO;
   }
 

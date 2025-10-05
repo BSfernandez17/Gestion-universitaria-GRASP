@@ -39,19 +39,12 @@ public class ConnectionDb {
 
           try {
             DatabaseConfig.init(connection);
-<<<<<<< HEAD
-=======
             DatabaseSeed.seed(connection);
->>>>>>> feature/oracle-integration
             System.out.println("✅ Tablas creadas o ya existían");
           } catch (Exception e) {
             System.out.println("⚠️ Error al inicializar la base de datos: " + e.getMessage());
             e.printStackTrace();
           }
-<<<<<<< HEAD
-          DatabaseSeed.seed(connection);
-=======
->>>>>>> feature/oracle-integration
         } else {
           DatabaseConfigOracle.init(connection);
           DatabaseOracleSeed.seed(connection);
@@ -65,8 +58,4 @@ public class ConnectionDb {
     }
     return connection;
   }
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> feature/oracle-integration

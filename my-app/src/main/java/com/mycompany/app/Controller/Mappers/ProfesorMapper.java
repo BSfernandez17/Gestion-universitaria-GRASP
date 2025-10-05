@@ -24,13 +24,9 @@ public class ProfesorMapper {
   public static List<ProfesorDTO> toDTOList(List<Profesor> entities) {
     List<ProfesorDTO> dtoList = new ArrayList<>();
     for (Profesor entity : entities) {
-<<<<<<< HEAD
-      dtoList.add(toDTO(entity));
-=======
       if (entity != null) { // solo agrega si no es null
         dtoList.add(toDTO(entity));
       }
->>>>>>> feature/oracle-integration
     }
     return dtoList;
   }

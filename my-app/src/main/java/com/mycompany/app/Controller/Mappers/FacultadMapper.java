@@ -20,12 +20,8 @@ public class FacultadMapper {
   public static List<FacultadDTO> toDTOList(List<Facultad> entities) {
     List<FacultadDTO> dtoList = new ArrayList<>();
     for (Facultad entity : entities) {
-<<<<<<< HEAD
-      dtoList.add(toDTO(entity));
-=======
       if (entity != null)
         dtoList.add(toDTO(entity));
->>>>>>> feature/oracle-integration
     }
     return dtoList;
   }
