@@ -13,7 +13,11 @@ public class PersonaService {
   }
 
   public void insertar(PersonaDTO pDTO) {
-    personaDAO.insertar(pDTO);
+    try {
+      personaDAO.insertar(pDTO);
+    } catch (Exception e) {
+      System.out.println("Error al insertar persona: " + e.getMessage());
+    }
   }
 
   public List<PersonaDTO> listar() {

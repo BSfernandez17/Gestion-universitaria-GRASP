@@ -8,7 +8,7 @@ import java.util.List;
 public class ProgramaService {
   ProgramaDAO programaDAO;
 
-  ProgramaService(ProgramaDAO programaDAO) {
+  public ProgramaService(ProgramaDAO programaDAO) {
     this.programaDAO = programaDAO;
   }
 

@@ -16,35 +16,60 @@ public class PersonaDAO {
   public PersonaDAO(Connection connection) {
     this.connection = connection;
   }
-    public Persona buscarPorId(Double id) {
-        Persona persona = null;
-        String sql = "SELECT * FROM personas WHERE id = ?";
 
-        try (PreparedStatement ps = connection.prepareStatement(sql)) {
-            ps.setDouble(1, id);
-            ResultSet rs = ps.executeQuery();
+  public Persona buscarPorId(Double id) {
+    Persona persona = null;
+    String sql = "SELECT * FROM personas WHERE id = ?";
 
-            if (rs.next()) {
-                Double personaId = rs.getDouble("id");
-                String nombres = rs.getString("nombre");
-                String apellidos = rs.getString("apellido");
-                String email = rs.getString("email");
+    try (PreparedStatement ps = connection.prepareStatement(sql)) {
+      ps.setDouble(1, id);
+      ResultSet rs = ps.executeQuery();
 
-                persona = new Persona(personaId, nombres, apellidos, email);
-            }
+      if (rs.next()) {
+        Double personaId = rs.getDouble("id");
+        String nombres = rs.getString("nombre");
+        String apellidos = rs.getString("apellido");
+        String email = rs.getString("email");
 
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        persona = new Persona(personaId, nombres, apellidos, email);
+      }
 
-        return persona;
+    } catch (SQLException e) {
+      e.printStackTrace();
     }
+
+    return persona;
+  }
+
+  public Persona buscarPorEmail(String email) {
+    Persona persona = null;
+    String sql = "SELECT * FROM personas WHERE email = ?";
+
+    try (PreparedStatement ps = connection.prepareStatement(sql)) {
+      ps.setString(1, email);
+      ResultSet rs = ps.executeQuery();
+
+      if (rs.next()) {
+        Double personaId = rs.getDouble("id");
+        String nombres = rs.getString("nombre");
+        String apellidos = rs.getString("apellido");
+        String emailFound = rs.getString("email");
+
+        persona = new Persona(personaId, nombres, apellidos, emailFound);
+      }
+
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+
+    return persona;
+  }
+
   public void insertar(PersonaDTO p) {
-    String pStatement = "SQL INSERT INTO personas (id, nombre, apellido, email) VALUES (?, ?, ?, ?)";
+    String pStatement = "INSERT INTO personas (id, nombre, apellido, email) VALUES (?, ?, ?, ?)";
     try (PreparedStatement ps = connection.prepareStatement(pStatement)) {
 
-
-      ps.setDouble(1, IdGenerator.generateId());
+      ps.setDouble(1, generateId());
       ps.setString(2, p.getNombres());
       ps.setString(3, p.getApellidos());
       ps.setString(4, p.getEmail());
@@ -52,6 +77,11 @@ public class PersonaDAO {
     } catch (SQLException e) {
       e.printStackTrace();
     }
+  }
+
+  private Integer generateId() {
+    Integer counter = listar().size();
+    return counter + 1;
   }
 
   public List<Persona> listar() {

@@ -21,6 +21,11 @@ public class EstudianteDTO extends PersonaDTO {
     return codigo;
   }
 
+  @Override
+  public Double getID() {
+    return super.getID();
+  }
+
   public ProgramaDTO getPrograma() {
     return programaDTO;
   }

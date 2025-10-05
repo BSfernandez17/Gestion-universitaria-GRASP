@@ -23,8 +23,6 @@ public class DatabaseConfig {
               "id DOUBLE PRIMARY KEY," +
               "nombre VARCHAR(255)," +
               "decano_id DOUBLE," +
-              "telefono VARCHAR(255)," +
-              "email VARCHAR(255)," +
               "FOREIGN KEY (decano_id) REFERENCES personas(id)" +
               ")");
 
@@ -44,7 +42,7 @@ public class DatabaseConfig {
           "CREATE TABLE IF NOT EXISTS profesores (" +
               "id DOUBLE PRIMARY KEY," +
               "persona_id DOUBLE," +
-              "tipoContrato VARCHAR(255),"+
+              "tipoContrato VARCHAR(255)," +
               "FOREIGN KEY (persona_id) REFERENCES personas(id)" +
               ")");
 
@@ -72,31 +70,29 @@ public class DatabaseConfig {
               ")");
 
       // Tabla CursoProfesor (relación many-to-many)
-stmt.execute(
-    "CREATE TABLE IF NOT EXISTS curso_profesor (" +
-        "id DOUBLE PRIMARY KEY," +
-        "curso_id DOUBLE," +
-        "profesor_id DOUBLE," +
-        "año INTEGER," +
-        "semestre INTEGER," +
-        "FOREIGN KEY (profesor_id) REFERENCES profesores(id)," +
-        "FOREIGN KEY (curso_id) REFERENCES cursos(id)" +
-    ")");
-
+      stmt.execute(
+          "CREATE TABLE IF NOT EXISTS curso_profesor (" +
+              "id DOUBLE PRIMARY KEY," +
+              "curso_id DOUBLE," +
+              "profesor_id DOUBLE," +
+              "año INTEGER," +
+              "semestre INTEGER," +
+              "FOREIGN KEY (profesor_id) REFERENCES profesores(id)," +
+              "FOREIGN KEY (curso_id) REFERENCES cursos(id)" +
+              ")");
 
       // Tabla Inscripcion (relación many-to-many)
-stmt.execute(
-    "CREATE TABLE IF NOT EXISTS inscripciones (" +
-        "id DOUBLE PRIMARY KEY," +           // <-- ahora es DOUBLE
-        "curso_id DOUBLE," +                 // <-- debe ser DOUBLE
-        "estudiante_id DOUBLE," +            // <-- debe ser DOUBLE
-        "año INTEGER," +
-        "semestre INTEGER," +
-        "UNIQUE(curso_id, estudiante_id, año, semestre)," +
-        "FOREIGN KEY (curso_id) REFERENCES cursos(id)," +
-        "FOREIGN KEY (estudiante_id) REFERENCES estudiantes(id)" +
-    ")"
-);
+      stmt.execute(
+          "CREATE TABLE IF NOT EXISTS inscripciones (" +
+              "id DOUBLE PRIMARY KEY," + // <-- ahora es DOUBLE
+              "curso_id DOUBLE," + // <-- debe ser DOUBLE
+              "estudiante_id DOUBLE," + // <-- debe ser DOUBLE
+              "año INTEGER," +
+              "semestre INTEGER," +
+              "UNIQUE(curso_id, estudiante_id, año, semestre)," +
+              "FOREIGN KEY (curso_id) REFERENCES cursos(id)," +
+              "FOREIGN KEY (estudiante_id) REFERENCES estudiantes(id)" +
+              ")");
       System.out.println("Todas las tablas han sido creadas correctamente.");
     } catch (Exception e) {
       e.printStackTrace();

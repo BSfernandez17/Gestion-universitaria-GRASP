@@ -14,12 +14,12 @@ public class CursoDTO {
     this.activo = activo;
   }
 
-  public Double getID() {
-    return ID;
-  }
-
   public String getNombre() {
     return nombre;
+  }
+
+  public Double getID() {
+    return ID;
   }
 
   public ProgramaDTO getProgramaDTO() {

@@ -12,14 +12,18 @@ public class ProgramaMapper {
   }
 
   public static ProgramaDTO toDTO(Programa entity) {
+    if (entity == null)
+      return null;
     return new ProgramaDTO(entity.getID(), entity.getNombre(), entity.getDuracion(), entity.getRegistro(),
         FacultadMapper.toDTO(entity.getFacultad()));
   }
 
   public static List<ProgramaDTO> toDTOList(List<Programa> entities) {
     List<ProgramaDTO> dtoList = new ArrayList<>();
+
     for (Programa entity : entities) {
-      dtoList.add(toDTO(entity));
+      if (entity != null)
+        dtoList.add(toDTO(entity));
     }
     return dtoList;
   }

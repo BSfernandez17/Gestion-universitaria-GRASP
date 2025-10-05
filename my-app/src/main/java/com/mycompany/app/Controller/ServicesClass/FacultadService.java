@@ -8,7 +8,7 @@ import java.util.List;
 public class FacultadService {
   FacultadDAO facultadDAO;
 
-  FacultadService(FacultadDAO facultadDAO) {
+  public FacultadService(FacultadDAO facultadDAO) {
     this.facultadDAO = facultadDAO;
   }
 

@@ -39,11 +39,11 @@ public class CursoDAO {
         Double id = rs.getDouble("id");
         String nombre = rs.getString("nombre");
         // Paso 1: obtener el programa_id
-            Double programaId = rs.getDouble("programa_id");
+        Double programaId = rs.getDouble("programa_id");
 
-            // Paso 2: usar ProgramaDAO para obtener el objeto Programa
-            ProgramaDAO programaDao = new ProgramaDAO(connection);
-            Programa programa = programaDao.buscarPorId(programaId);
+        // Paso 2: usar ProgramaDAO para obtener el objeto Programa
+        ProgramaDAO programaDao = new ProgramaDAO(connection);
+        Programa programa = programaDao.buscarPorId(programaId);
         Curso c = new Curso(id, nombre, programa, rs.getBoolean("activo"));
         cursos.add(c);
       }
@@ -52,35 +52,36 @@ public class CursoDAO {
     }
     return cursos;
   }
-public Curso buscarPorId(Double id) {
+
+  public Curso buscarPorId(Double id) {
     Curso curso = null;
     String sql = "SELECT * FROM cursos WHERE id = ?";
 
     try (PreparedStatement ps = connection.prepareStatement(sql)) {
-        ps.setDouble(1, id);
-        ResultSet rs = ps.executeQuery();
+      ps.setDouble(1, id);
+      ResultSet rs = ps.executeQuery();
 
-        if (rs.next()) {
-            Double cursoId = rs.getDouble("id");
-            String nombre = rs.getString("nombre");
-            Boolean activo = rs.getBoolean("activo");
+      if (rs.next()) {
+        Double cursoId = rs.getDouble("id");
+        String nombre = rs.getString("nombre");
+        Boolean activo = rs.getBoolean("activo");
 
-            // Paso 1: obtener el programa_id
-            Double programaId = rs.getDouble("programa_id");
+        // Paso 1: obtener el programa_id
+        Double programaId = rs.getDouble("programa_id");
 
-            // Paso 2: usar ProgramaDAO para obtener el objeto Programa
-            ProgramaDAO programaDao = new ProgramaDAO(connection);
-            Programa programa = programaDao.buscarPorId(programaId);
+        // Paso 2: usar ProgramaDAO para obtener el objeto Programa
+        ProgramaDAO programaDao = new ProgramaDAO(connection);
+        Programa programa = programaDao.buscarPorId(programaId);
 
-            // Paso 3: crear el objeto Curso
-            curso = new Curso(cursoId, nombre, programa, activo);
-        }
+        // Paso 3: crear el objeto Curso
+        curso = new Curso(cursoId, nombre, programa, activo);
+      }
     } catch (SQLException e) {
-        e.printStackTrace();
+      e.printStackTrace();
     }
 
     return curso;
-}
+  }
 
   public void eliminar(Integer id) {
     String sql = "DELETE FROM cursos WHERE id=?";

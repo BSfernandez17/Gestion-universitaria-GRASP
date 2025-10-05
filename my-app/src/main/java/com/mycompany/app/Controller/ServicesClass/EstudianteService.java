@@ -7,7 +7,7 @@ import com.mycompany.app.Persistence.DAO.EstudianteDAO;
 public class EstudianteService {
   EstudianteDAO estudianteDAO;
 
-  EstudianteService(EstudianteDAO estudianteDAO) {
+  public EstudianteService(EstudianteDAO estudianteDAO) {
     this.estudianteDAO = estudianteDAO;
   }
 
