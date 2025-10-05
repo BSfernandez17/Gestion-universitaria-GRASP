@@ -32,20 +32,25 @@ public class MainMenuView {
         estudiantesBtn.setMnemonicParsing(true);
         estudiantesBtn.setTooltip(new javafx.scene.control.Tooltip("Alt+E - Ir a Gestión de Estudiantes"));
 
-        Button profesoresBtn = createButton("Gestión de Profesores");
-        
+    Button profesoresBtn = createButton("Gestión de Profesores");
+    profesoresBtn.setOnAction(e -> new ProfesorView().show(stage));
+
         Button personasBtn = createButton("_Gestión de Personas");
         personasBtn.setOnAction(e -> new PersonaView().show(stage));
         personasBtn.setMnemonicParsing(true);
         personasBtn.setTooltip(new javafx.scene.control.Tooltip("Alt+P - Ir a Gestión de Personas"));
 
-        Button cursosBtn = createButton("Gestión de Cursos");
-        
-        Button inscripcionesBtn = createButton("Gestión de Inscripciones");
-        
-        Button programasBtn = createButton("Gestión de Programas");
-        
-        Button facultadesBtn = createButton("Gestión de Facultades");
+    Button cursosBtn = createButton("Gestión de Cursos");
+    cursosBtn.setOnAction(e -> new CursoView().show(stage));
+
+    Button inscripcionesBtn = createButton("Gestión de Inscripciones");
+    inscripcionesBtn.setOnAction(e -> new InscripcionView().show(stage));
+
+    Button programasBtn = createButton("Gestión de Programas");
+    programasBtn.setOnAction(e -> new ProgramaView().show(stage));
+
+    Button facultadesBtn = createButton("Gestión de Facultades");
+    facultadesBtn.setOnAction(e -> new FacultadView().show(stage));
 
         // Agrupar botones en dos columnas
         VBox col1 = new VBox(12, estudiantesBtn, profesoresBtn, personasBtn);
@@ -100,38 +105,38 @@ public class MainMenuView {
 
     private MenuBar createMenuBar() {
         MenuBar menuBar = new MenuBar();
-        
+
         // Menú Archivo
         Menu fileMenu = new Menu("Archivo");
         MenuItem exitItem = new MenuItem("Salir");
         exitItem.setAccelerator(KeyCombination.keyCombination("Ctrl+Q"));
         exitItem.setOnAction(e -> System.exit(0));
         fileMenu.getItems().add(exitItem);
-        
+
         // Menú Ver
         Menu viewMenu = new Menu("Ver");
         MenuItem refreshItem = new MenuItem("Actualizar");
         refreshItem.setAccelerator(KeyCombination.keyCombination("F5"));
         viewMenu.getItems().add(refreshItem);
-        
+
         // Menú Ayuda
         Menu helpMenu = new Menu("Ayuda");
         MenuItem shortcutsItem = new MenuItem("Atajos de teclado");
         MenuItem aboutItem = new MenuItem("Acerca de");
         helpMenu.getItems().addAll(shortcutsItem, aboutItem);
-        
+
         menuBar.getMenus().addAll(fileMenu, viewMenu, helpMenu);
         return menuBar;
     }
 
     private ToolBar createToolBar() {
         ToolBar toolBar = new ToolBar();
-        
+
         Button refreshBtn = new Button("Actualizar");
         refreshBtn.setTooltip(new Tooltip("Actualizar vista (F5)"));
-        
+
         Separator separator = new Separator();
-        
+
         ComboBox<String> viewSelector = new ComboBox<>();
         viewSelector.getItems().addAll(
             "Vista Principal",
@@ -142,7 +147,7 @@ public class MainMenuView {
         );
         viewSelector.setValue("Vista Principal");
         viewSelector.setTooltip(new Tooltip("Cambiar vista actual"));
-        
+
         toolBar.getItems().addAll(refreshBtn, separator, viewSelector);
         return toolBar;
     }

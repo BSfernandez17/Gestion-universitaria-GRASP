@@ -12,8 +12,8 @@ public class PersonaService {
     this.personaDAO = personaDAO;
   }
 
-  public void insertar(PersonaDTO pDTO) {
-    personaDAO.insertar(pDTO);
+  public Double insertar(PersonaDTO pDTO) {
+    return personaDAO.insertar(pDTO);
   }
 
   public List<PersonaDTO> listar() {

@@ -39,19 +39,20 @@ public class PersonaDAO {
 
         return persona;
     }
-  public void insertar(PersonaDTO p) {
-    String pStatement = "SQL INSERT INTO personas (id, nombre, apellido, email) VALUES (?, ?, ?, ?)";
+  public Double insertar(PersonaDTO p) {
+    String pStatement = "INSERT INTO personas (id, nombre, apellido, email) VALUES (?, ?, ?, ?)";
+    Double id = IdGenerator.generateId();
     try (PreparedStatement ps = connection.prepareStatement(pStatement)) {
-
-
-      ps.setDouble(1, IdGenerator.generateId());
+      ps.setDouble(1, id);
       ps.setString(2, p.getNombres());
       ps.setString(3, p.getApellidos());
       ps.setString(4, p.getEmail());
       ps.executeUpdate();
     } catch (SQLException e) {
       e.printStackTrace();
+      return null;
     }
+    return id;
   }
 
   public List<Persona> listar() {

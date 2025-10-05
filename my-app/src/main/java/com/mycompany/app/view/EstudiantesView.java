@@ -37,15 +37,29 @@ public class EstudiantesView {
 
         TableView<Estudiante> table = new TableView<>();
         TableColumn<Estudiante, Double> idCol = new TableColumn<>("ID");
-        idCol.setCellValueFactory(new PropertyValueFactory<>("id"));
+        idCol.setCellValueFactory(new PropertyValueFactory<Estudiante, Double>("id"));
         TableColumn<Estudiante, String> nombresCol = new TableColumn<>("Nombres");
-        nombresCol.setCellValueFactory(new PropertyValueFactory<>("nombres"));
+        nombresCol.setCellValueFactory(new PropertyValueFactory<Estudiante, String>("nombres"));
         TableColumn<Estudiante, String> apellidosCol = new TableColumn<>("Apellidos");
-        apellidosCol.setCellValueFactory(new PropertyValueFactory<>("apellidos"));
+        apellidosCol.setCellValueFactory(new PropertyValueFactory<Estudiante, String>("apellidos"));
         TableColumn<Estudiante, String> emailCol = new TableColumn<>("Email");
-        emailCol.setCellValueFactory(new PropertyValueFactory<>("email"));
-    table.getColumns().addAll(java.util.Arrays.asList(idCol, nombresCol, apellidosCol, emailCol));
-    table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        emailCol.setCellValueFactory(new PropertyValueFactory<Estudiante, String>("email"));
+        TableColumn<Estudiante, String> programaCol = new TableColumn<>("Programa");
+        // Use a cell value factory that reads the Programa name safely
+        programaCol.setCellValueFactory(cell -> {
+            Programa p = cell.getValue().getPrograma();
+            String name = p == null ? "-" : p.getNombre();
+            return new javafx.beans.property.ReadOnlyStringWrapper(name);
+        });
+    java.util.List<TableColumn<Estudiante, ?>> cols = new java.util.ArrayList<>();
+    cols.add(idCol);
+    cols.add(nombresCol);
+    cols.add(apellidosCol);
+    cols.add(emailCol);
+    cols.add(programaCol);
+    table.getColumns().addAll(cols);
+    // Use a simple lambda-based resize policy to avoid deprecated constants
+    table.setColumnResizePolicy(param -> true);
 
     // UI fields
     ComboBox<Programa> programaBox = new ComboBox<>();

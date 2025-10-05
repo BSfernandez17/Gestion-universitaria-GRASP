@@ -39,7 +39,21 @@ public class InscripcionDAO {
         Double id = rs.getDouble("id");
         Integer año = rs.getInt("año");
         Integer semestre = rs.getInt("semestre");
-        Inscripcion insc = new Inscripcion(id, null, año, semestre, null);
+        Double cursoId = rs.getObject("curso_id") == null ? null : rs.getDouble("curso_id");
+        Double estudianteId = rs.getObject("estudiante_id") == null ? null : rs.getDouble("estudiante_id");
+
+        com.mycompany.app.Model.Curso curso = null;
+        com.mycompany.app.Model.Estudiante estudiante = null;
+        if (cursoId != null) {
+          com.mycompany.app.Persistence.DAO.CursoDAO cdao = new com.mycompany.app.Persistence.DAO.CursoDAO(connection);
+          curso = cdao.buscarPorId(cursoId);
+        }
+        if (estudianteId != null) {
+          com.mycompany.app.Persistence.DAO.EstudianteDAO edao = new com.mycompany.app.Persistence.DAO.EstudianteDAO(connection);
+          estudiante = edao.buscarPorId(estudianteId);
+        }
+
+        Inscripcion insc = new Inscripcion(id, curso, año, semestre, estudiante);
         lista.add(insc);
       }
     } catch (SQLException e) {
