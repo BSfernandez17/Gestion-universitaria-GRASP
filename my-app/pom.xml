@@ -149,5 +149,20 @@
         </plugin>
       </plugins>
     </pluginManagement>
+    <!-- Activate plugins -->
+    <plugins>
+      <!-- JavaFX plugin to run the UI -->
+      <plugin>
+        <groupId>org.openjfx</groupId>
+        <artifactId>javafx-maven-plugin</artifactId>
+        <version>0.0.8</version>
+        <configuration>
+          <mainClass>com.mycompany.app.MainFX</mainClass>
+          <modules>
+            <module>javafx.controls</module>
+          </modules>
+        </configuration>
+      </plugin>
+    </plugins>
   </build>
 </project>

@@ -7,7 +7,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.print.DocFlavor.INPUT_STREAM;
 
 import com.mycompany.app.Model.Facultad;
 import com.mycompany.app.Model.Persona;
@@ -22,23 +21,25 @@ public class FacultadDAO {
   }
 
   public void insertar(FacultadDTO f) {
-
-    PersonaDAO personaDAO = new PersonaDAO(connection);
-    String sql = "INSERT INTO facultades (id,nombre, decano_id) VALUES (?, ?, ?)";
+    String sql = "INSERT INTO facultades (id, nombre, decano_id) VALUES (?, ?, ?)";
     try (PreparedStatement ps = connection.prepareStatement(sql)) {
-      Double decanoId = personaDAO.buscarPorEmail(f.getDecanoDTO().getEmail()).getID();
       ps.setDouble(1, generateID());
       ps.setString(2, f.getNombre());
-      ps.setDouble(3, decanoId);
+      ps.setDouble(3, f.getDecanoDTO().getID());
       ps.executeUpdate();
     } catch (SQLException ex) {
       ex.printStackTrace();
     }
   }
 
-  public Integer generateID() {
-    Integer counter = listar().size();
-    return counter++;
+  public Double generateID() {
+    String sql = "SELECT COALESCE(MAX(id), 0) + 1 AS next_id FROM facultades";
+    try (PreparedStatement ps = connection.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
+      if (rs.next()) return rs.getDouble("next_id");
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+    return Math.floor(Math.random() * 900000) + 1000;
   }
 
   public List<Facultad> listar() {
@@ -47,7 +48,6 @@ public class FacultadDAO {
     try (PreparedStatement ps = connection.prepareStatement(sql);
         ResultSet rs = ps.executeQuery()) {
       while (rs.next()) {
-        Double id = rs.getDouble("id");
         String nombre = rs.getString("nombre");
         Double facultadId = rs.getDouble("id");
 

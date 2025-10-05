@@ -7,8 +7,15 @@ import java.util.List;
 
 public class ProgramaMapper {
   public static Programa toEntity(ProgramaDTO dto) {
-    return new Programa(dto.getID(), dto.getNombre(), dto.getDuracion(), dto.getRegistro(),
-        FacultadMapper.toEntity(dto.getFacultadDTO()));
+    if (dto == null)
+      return null;
+    var facDto = dto.getFacultadDTO();
+    return new Programa(
+        dto.getID(),
+        dto.getNombre(),
+        dto.getDuracion(),
+        dto.getRegistro(),
+        facDto != null ? FacultadMapper.toEntity(facDto) : null);
   }
 
   public static ProgramaDTO toDTO(Programa entity) {

@@ -18,15 +18,11 @@ public class InscripcionDAO {
   }
 
   public void insertar(InscripcionDTO i) {
-    CursoDAO cDao=new CursoDAO(connection);
-    EstudianteDAO eDao= new EstudianteDAO(connection);
     String sql = "INSERT INTO inscripciones (id,curso_id, estudiante_id, año, semestre) VALUES (?, ?, ?, ?, ?)";
     try (PreparedStatement ps = connection.prepareStatement(sql)) {
       ps.setDouble(1, generateID());
-      ps.setDouble(2, cDao.buscarPorNombre(i.getCursoDTO().getNombre()).getID());
-      if (eDao.buscarPorCodigo(i.getEstudianteDTO().getCodigo()) != null) {
-        ps.setDouble(3, eDao.buscarPorCodigo(i.getEstudianteDTO().getCodigo()).getID());
-      }
+      ps.setDouble(2, i.getCursoDTO().getID());
+      ps.setDouble(3, i.getEstudianteDTO().getID());
       ps.setInt(4, i.getAño());
       ps.setInt(5, i.getSemestre());
       ps.executeUpdate();
@@ -34,9 +30,14 @@ public class InscripcionDAO {
       e.printStackTrace();
     }
   }
-private Integer generateID(){
-  Integer counter= listar().size();
-  return counter++;
+private Double generateID(){
+  String sql = "SELECT COALESCE(MAX(id), 0) + 1 AS next_id FROM inscripciones";
+  try (PreparedStatement ps = connection.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
+    if (rs.next()) return rs.getDouble("next_id");
+  } catch (SQLException e) {
+    e.printStackTrace();
+  }
+  return Math.floor(Math.random() * 900000) + 1000;
 }
   public List<Inscripcion> listar() {
     List<Inscripcion> lista = new ArrayList<>();

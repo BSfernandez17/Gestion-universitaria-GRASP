@@ -122,13 +122,22 @@ public Estudiante buscarPorCodigo(Double codigo) {
     return null;
   }
   public void insertar(EstudianteDTO e) {
-    ProgramaDAO programaDAO = new ProgramaDAO(connection);
-    String sql = "INSERT INTO estudiantes (id,persona_id, codigo, programa_id, activo, promedio) VALUES (?, ?, ?, ?,?,?)";
+    // Asegurar que exista la persona referenciada por persona_id
+    PersonaDAO personaDAO = new PersonaDAO(connection);
+    Persona persona = personaDAO.buscarPorId(e.getID());
+    if (persona == null) {
+      // Crear persona a partir de los datos del EstudianteDTO respetando el ID
+      com.mycompany.app.DTO.PersonaDTO p = new com.mycompany.app.DTO.PersonaDTO(
+          e.getID(), e.getNombres(), e.getApellidos(), e.getEmail());
+      personaDAO.insertarConId(p);
+    }
+
+    String sql = "INSERT INTO estudiantes (id, persona_id, codigo, programa_id, activo, promedio) VALUES (?, ?, ?, ?, ?, ?)";
     try (PreparedStatement ps = connection.prepareStatement(sql)) {
       ps.setDouble(1, generateID());
       ps.setDouble(2, e.getID());
       ps.setDouble(3, e.getCodigo());
-      ps.setDouble(4, programaDAO.buscarPorNombre(e.getPrograma().getNombre()).getID());
+      ps.setDouble(4, e.getPrograma().getID());
       ps.setBoolean(5, e.getActivo());
       ps.setDouble(6, e.getPromedio());
       ps.executeUpdate();
@@ -137,9 +146,18 @@ public Estudiante buscarPorCodigo(Double codigo) {
     }
   }
 
-  private Integer generateID() {
-    Integer counter = listar().size();
-    return counter++;
+  private Double generateID() {
+    String sql = "SELECT COALESCE(MAX(id), 0) + 1 AS next_id FROM estudiantes";
+    try (PreparedStatement ps = connection.prepareStatement(sql);
+         ResultSet rs = ps.executeQuery()) {
+      if (rs.next()) {
+        return rs.getDouble("next_id");
+      }
+    } catch (SQLException ex) {
+      ex.printStackTrace();
+    }
+    // Fallback si falla la consulta
+    return Math.floor(Math.random() * 900000) + 1000;
   }
 
   public List<Estudiante> listar() {
@@ -166,7 +184,7 @@ public Estudiante buscarPorCodigo(Double codigo) {
         Double codigo = rs.getDouble("codigo");
         Boolean activo = rs.getBoolean("activo");
         Double promedio = rs.getDouble("promedio");
-        Programa programa = programaDAO.buscarPorId(id);
+        Programa programa = programaDAO.buscarPorId(rs.getDouble("programa"));
         Estudiante est = new Estudiante(id, nombres, apellidos, email, codigo, programa, activo, promedio);
         estudiantes.add(est);
       }
@@ -187,16 +205,26 @@ public Estudiante buscarPorCodigo(Double codigo) {
   }
 
   public void actualizar(EstudianteDTO e) {
-    String sql = "UPDATE estudiantes SET nombre=?, apellido=?, email=?, codigo=?, programa_id=?, activo=?, promedio=? WHERE id=?";
-    try (PreparedStatement ps = connection.prepareStatement(sql)) {
+    // Actualiza primero persona (nombre, apellido, email)
+    String updatePersona = "UPDATE personas SET nombre=?, apellido=?, email=? WHERE id=(SELECT persona_id FROM estudiantes WHERE id=?)";
+    try (PreparedStatement ps = connection.prepareStatement(updatePersona)) {
       ps.setString(1, e.getNombres());
       ps.setString(2, e.getApellidos());
       ps.setString(3, e.getEmail());
-      ps.setDouble(4, e.getCodigo());
-      ps.setDouble(5, e.getPrograma().getID());
-      ps.setBoolean(6, e.getActivo());
-      ps.setDouble(7, e.getPromedio());
-      ps.setDouble(8, e.getID());
+      ps.setDouble(4, e.getID());
+      ps.executeUpdate();
+    } catch (SQLException ex) {
+      ex.printStackTrace();
+    }
+
+    // Luego actualiza datos propios del estudiante
+    String updateEstudiante = "UPDATE estudiantes SET codigo=?, programa_id=?, activo=?, promedio=? WHERE id=?";
+    try (PreparedStatement ps = connection.prepareStatement(updateEstudiante)) {
+      ps.setDouble(1, e.getCodigo());
+      ps.setDouble(2, e.getPrograma().getID());
+      ps.setBoolean(3, e.getActivo());
+      ps.setDouble(4, e.getPromedio());
+      ps.setDouble(5, e.getID());
       ps.executeUpdate();
     } catch (SQLException ex) {
       ex.printStackTrace();

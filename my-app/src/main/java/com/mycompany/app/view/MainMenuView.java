@@ -7,7 +7,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 // NUEVO: importamos la vista de estudiantes
-import com.mycompany.app.view.EstudiantesView;
+// import kept implicit via same package; no explicit import needed
 
 public class MainMenuView {
     public void show(Stage stage) {
@@ -19,13 +19,38 @@ public class MainMenuView {
         });
 
         Button profesoresBtn = new Button("Gestión de Profesores");
+        profesoresBtn.setOnAction(e -> {
+            ProfesoresView profesoresView = new ProfesoresView();
+            profesoresView.show(stage);
+        });
         Button cursosBtn = new Button("Gestión de Cursos");
+        cursosBtn.setOnAction(e -> {
+            CursosView cursosView = new CursosView();
+            cursosView.show(stage);
+        });
         Button inscripcionesBtn = new Button("Gestión de Inscripciones");
+        inscripcionesBtn.setOnAction(e -> {
+            InscripcionesView inscripcionesView = new InscripcionesView();
+            inscripcionesView.show(stage);
+        });
         Button programasBtn = new Button("Gestión de Programas");
+        programasBtn.setOnAction(e -> {
+            ProgramasView programasView = new ProgramasView();
+            programasView.show(stage);
+        });
         Button facultadesBtn = new Button("Gestión de Facultades");
+        facultadesBtn.setOnAction(e -> {
+            FacultadesView facultadesView = new FacultadesView();
+            facultadesView.show(stage);
+        });
+        Button cursoProfesorBtn = new Button("Asignar Cursos a Profesores");
+        cursoProfesorBtn.setOnAction(e -> {
+            CursoProfesoresView view = new CursoProfesoresView();
+            view.show(stage);
+        });
 
         // VBox con todos los botones
-        VBox vbox = new VBox(15, estudiantesBtn, profesoresBtn, cursosBtn, inscripcionesBtn, programasBtn, facultadesBtn);
+    VBox vbox = new VBox(15, estudiantesBtn, profesoresBtn, cursosBtn, inscripcionesBtn, programasBtn, facultadesBtn, cursoProfesorBtn);
         vbox.setAlignment(Pos.CENTER);
         vbox.setStyle("-fx-padding: 40;");
 

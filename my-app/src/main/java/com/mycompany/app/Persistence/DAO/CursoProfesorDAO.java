@@ -21,18 +21,12 @@ public class CursoProfesorDAO {
   }
 
   public void insertar(CursoProfesorDTO cp) {
-    CursoDAO cursoDAO = new CursoDAO(connection);
-    ProfesorDAO profesorDAO = new ProfesorDAO(connection);
-    Profesor profesor = profesorDAO.buscarPorEmail(cp.getProfesorDTO().getEmail());
-    if (profesor == null) {
-      System.out.println("Error: El profesor con email '" + cp.getProfesorDTO().getEmail() + "' no existe. No se puede asociar al curso.");
-      return;
-    }
-    String sql = "INSERT INTO curso_profesor (id,curso_id, profesor_id, año, semestre) VALUES (?, ?, ?, ?,?)";
+    String sql = "INSERT INTO curso_profesor (id, curso_id, profesor_id, año, semestre) VALUES (?, ?, ?, ?, ?)";
     try (PreparedStatement ps = connection.prepareStatement(sql)) {
-      ps.setDouble(1, cp.getID());
-      ps.setDouble(2, cursoDAO.buscarPorNombre(cp.getCursoDTO().getNombre()).getID());
-      ps.setDouble(3, profesor.getID());
+      Double id = cp.getID() != null ? cp.getID() : generateNextId();
+      ps.setDouble(1, id);
+      ps.setDouble(2, cp.getCursoDTO().getID());
+      ps.setDouble(3, cp.getProfesorDTO().getID());
       ps.setInt(4, cp.getAño());
       ps.setInt(5, cp.getSemestre());
       ps.executeUpdate();
@@ -40,14 +34,22 @@ public class CursoProfesorDAO {
       e.printStackTrace();
     }
   }
-  private Integer generateID(){
-    Integer counter=listar().size();
-    return counter++;
+
+  private Double generateNextId() {
+    String sql = "SELECT COALESCE(MAX(id), 0) + 1 AS next_id FROM curso_profesor";
+    try (PreparedStatement ps = connection.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
+      if (rs.next()) {
+        return rs.getDouble("next_id");
+      }
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+    return 1.0;
   }
 
 public List<CursoProfesor> listar() {
     List<CursoProfesor> lista = new ArrayList<>();
-    String sql = "SELECT * FROM curso_profesor";
+  String sql = "SELECT * FROM curso_profesor";
 
     // Instanciamos los DAOs de Curso y Profesor
     CursoDAO cursoDAO = new CursoDAO(connection);
@@ -89,7 +91,7 @@ public List<CursoProfesor> listar() {
   }
 
   public void actualizar(CursoProfesorDTO cp) {
-    String sql = "UPDATE curso_profesor SET curso_id=?, profesor_id=?, año=?, semestre=? WHERE id=?";
+  String sql = "UPDATE curso_profesor SET curso_id=?, profesor_id=?, año=?, semestre=? WHERE id=?";
     try (PreparedStatement ps = connection.prepareStatement(sql)) {
       ps.setDouble(1, cp.getCursoDTO().getID());
       ps.setDouble(2, cp.getProfesorDTO().getID());

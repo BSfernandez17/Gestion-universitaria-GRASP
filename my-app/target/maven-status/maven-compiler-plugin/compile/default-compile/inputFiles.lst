@@ -38,6 +38,7 @@ C:\Users\ferna\OneDrive\Escritorio\Tecno-avanzadas\Gestion-universitaria-GRASP\m
 C:\Users\ferna\OneDrive\Escritorio\Tecno-avanzadas\Gestion-universitaria-GRASP\my-app\src\main\java\com\mycompany\app\GUI\GUIUtils.java
 C:\Users\ferna\OneDrive\Escritorio\Tecno-avanzadas\Gestion-universitaria-GRASP\my-app\src\main\java\com\mycompany\app\GUI\LogPanel.java
 C:\Users\ferna\OneDrive\Escritorio\Tecno-avanzadas\Gestion-universitaria-GRASP\my-app\src\main\java\com\mycompany\app\GUI\ProfesoresPanel.java
+C:\Users\ferna\OneDrive\Escritorio\Tecno-avanzadas\Gestion-universitaria-GRASP\my-app\src\main\java\com\mycompany\app\MainFX.java
 C:\Users\ferna\OneDrive\Escritorio\Tecno-avanzadas\Gestion-universitaria-GRASP\my-app\src\main\java\com\mycompany\app\Model\Curso.java
 C:\Users\ferna\OneDrive\Escritorio\Tecno-avanzadas\Gestion-universitaria-GRASP\my-app\src\main\java\com\mycompany\app\Model\CursoProfesor.java
 C:\Users\ferna\OneDrive\Escritorio\Tecno-avanzadas\Gestion-universitaria-GRASP\my-app\src\main\java\com\mycompany\app\Model\Estudiante.java
@@ -78,5 +79,12 @@ C:\Users\ferna\OneDrive\Escritorio\Tecno-avanzadas\Gestion-universitaria-GRASP\m
 C:\Users\ferna\OneDrive\Escritorio\Tecno-avanzadas\Gestion-universitaria-GRASP\my-app\src\main\java\com\mycompany\app\test\PersonaTest.java
 C:\Users\ferna\OneDrive\Escritorio\Tecno-avanzadas\Gestion-universitaria-GRASP\my-app\src\main\java\com\mycompany\app\test\ProfesorTest.java
 C:\Users\ferna\OneDrive\Escritorio\Tecno-avanzadas\Gestion-universitaria-GRASP\my-app\src\main\java\com\mycompany\app\test\ProgramaTest.java
+C:\Users\ferna\OneDrive\Escritorio\Tecno-avanzadas\Gestion-universitaria-GRASP\my-app\src\main\java\com\mycompany\app\view\CursoProfesoresView.java
+C:\Users\ferna\OneDrive\Escritorio\Tecno-avanzadas\Gestion-universitaria-GRASP\my-app\src\main\java\com\mycompany\app\view\CursosView.java
 C:\Users\ferna\OneDrive\Escritorio\Tecno-avanzadas\Gestion-universitaria-GRASP\my-app\src\main\java\com\mycompany\app\view\EstudiantesView.java
+C:\Users\ferna\OneDrive\Escritorio\Tecno-avanzadas\Gestion-universitaria-GRASP\my-app\src\main\java\com\mycompany\app\view\FacultadesView.java
+C:\Users\ferna\OneDrive\Escritorio\Tecno-avanzadas\Gestion-universitaria-GRASP\my-app\src\main\java\com\mycompany\app\view\InscripcionesView.java
 C:\Users\ferna\OneDrive\Escritorio\Tecno-avanzadas\Gestion-universitaria-GRASP\my-app\src\main\java\com\mycompany\app\view\MainMenuView.java
+C:\Users\ferna\OneDrive\Escritorio\Tecno-avanzadas\Gestion-universitaria-GRASP\my-app\src\main\java\com\mycompany\app\view\ProfesoresView.java
+C:\Users\ferna\OneDrive\Escritorio\Tecno-avanzadas\Gestion-universitaria-GRASP\my-app\src\main\java\com\mycompany\app\view\ProgramasView.java
+C:\Users\ferna\OneDrive\Escritorio\Tecno-avanzadas\Gestion-universitaria-GRASP\my-app\src\main\java\com\mycompany\app\view\UiContext.java

@@ -19,21 +19,25 @@ public class CursoDAO {
   }
 
   public void insertar(CursoDTO c) {
-    ProgramaDAO prDAO=new ProgramaDAO(connection);
-    String sql = "INSERT INTO cursos (id,nombre, programa_id, activo) VALUES (?,?, ?, ?)";
+    String sql = "INSERT INTO cursos (id, nombre, programa_id, activo) VALUES (?, ?, ?, ?)";
     try (PreparedStatement ps = connection.prepareStatement(sql)) {
       ps.setDouble(1, generateID());
       ps.setString(2, c.getNombre());
-      ps.setDouble(3, prDAO.buscarPorNombre(c.getProgramaDTO().getNombre()).getID());
+      ps.setDouble(3, c.getProgramaDTO().getID());
       ps.setBoolean(4, c.getActivo());
       ps.executeUpdate();
     } catch (SQLException e) {
       e.printStackTrace();
     }
   }
-  private Integer generateID(){
-    Integer counter= listar().size();
-    return counter++;
+  private Double generateID(){
+    String sql = "SELECT COALESCE(MAX(id), 0) + 1 AS next_id FROM cursos";
+    try (PreparedStatement ps = connection.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
+      if (rs.next()) return rs.getDouble("next_id");
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+    return Math.floor(Math.random() * 900000) + 1000;
   }
   public List<Curso> listar() {
     List<Curso> cursos = new ArrayList<>();

@@ -8,6 +8,7 @@ import java.util.ArrayList;
 
 public class PersonaMapper {
   public static Persona toEntity(PersonaDTO dto) {
+    if (dto == null) return null;
     return new Persona(dto.getID(), dto.getNombres(), dto.getApellidos(), dto.getEmail());
   }
 
@@ -22,12 +23,14 @@ public class PersonaMapper {
   public static List<PersonaDTO> toDTOList(List<Persona> entities) {
     java.util.List<PersonaDTO> dtoList = new ArrayList<>();
     for (Persona entity : entities) {
-      dtoList.add(toDTO(entity));
+      PersonaDTO dto = toDTO(entity);
+      if (dto != null) dtoList.add(dto);
     }
     return dtoList;
   }
 
   public static PersonaDTO toDTO(Persona entity) {
+    if (entity == null) return null;
     return new PersonaDTO(entity.getID(), entity.getNombres(), entity.getApellidos(), entity.getEmail());
   }
 }

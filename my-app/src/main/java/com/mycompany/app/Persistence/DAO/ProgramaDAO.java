@@ -21,14 +21,13 @@ public class ProgramaDAO {
   }
 
   public void insertar(ProgramaDTO p) {
-    FacultadDAO facultadDAO = new FacultadDAO(connection);
-    String sql = "INSERT INTO programas (id,nombre, duracion, registro, facultad_id) VALUES (?,?, ?, ?, ?)";
+    String sql = "INSERT INTO programas (id, nombre, duracion, registro, facultad_id) VALUES (?, ?, ?, ?, ?)";
     try (PreparedStatement ps = connection.prepareStatement(sql)) {
       ps.setDouble(1, generateID());
       ps.setString(2, p.getNombre());
       ps.setDouble(3, p.getDuracion());
       ps.setDate(4, new java.sql.Date(p.getRegistro().getTime()));
-      ps.setDouble(5, facultadDAO.buscarPorNombre(p.getFacultadDTO().getNombre()).getID());
+      ps.setDouble(5, p.getFacultadDTO().getID());
       ps.executeUpdate();
     } catch (SQLException ex) {
       ex.printStackTrace();
@@ -36,13 +35,19 @@ public class ProgramaDAO {
   }
 
   private Double generateID() {
-    Double counter = (double) listar().size();
-    return counter++;
+    String sql = "SELECT COALESCE(MAX(id), 0) + 1 AS next_id FROM programas";
+    try (PreparedStatement ps = connection.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
+      if (rs.next()) return rs.getDouble("next_id");
+    } catch (SQLException ex) {
+      ex.printStackTrace();
+    }
+    return Math.floor(Math.random() * 900000) + 1000;
   }
 
   public List<Programa> listar() {
     List<Programa> programas = new ArrayList<>();
-    String sql = "SELECT * FROM programas";
+    String sql = "SELECT pr.id, pr.nombre, pr.duracion, pr.registro, f.id AS facultad_id, f.nombre AS facultad_nombre, f.decano_id " +
+                 "FROM programas pr JOIN facultades f ON pr.facultad_id = f.id";
     try (PreparedStatement ps = connection.prepareStatement(sql);
         ResultSet rs = ps.executeQuery()) {
       while (rs.next()) {
@@ -50,7 +55,9 @@ public class ProgramaDAO {
         String nombre = rs.getString("nombre");
         Double duracion = rs.getDouble("duracion");
         Date registro = rs.getDate("registro");
-        Programa prog = new Programa(id, nombre, duracion, registro, null);
+        // armar facultad mínima (solo para nombre/id)
+        Facultad fac = new Facultad(rs.getDouble("facultad_id"), rs.getString("facultad_nombre"), null);
+        Programa prog = new Programa(id, nombre, duracion, registro, fac);
         programas.add(prog);
       }
     } catch (SQLException ex) {

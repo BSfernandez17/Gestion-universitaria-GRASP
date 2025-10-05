@@ -68,7 +68,6 @@ public class PersonaDAO {
   public void insertar(PersonaDTO p) {
     String pStatement = "INSERT INTO personas (id, nombre, apellido, email) VALUES (?, ?, ?, ?)";
     try (PreparedStatement ps = connection.prepareStatement(pStatement)) {
-
       ps.setDouble(1, generateId());
       ps.setString(2, p.getNombres());
       ps.setString(3, p.getApellidos());
@@ -79,9 +78,31 @@ public class PersonaDAO {
     }
   }
 
-  private Integer generateId() {
-    Integer counter = listar().size();
-    return counter + 1;
+  // Inserta respetando el ID provisto en el DTO
+  public void insertarConId(PersonaDTO p) {
+    String pStatement = "INSERT INTO personas (id, nombre, apellido, email) VALUES (?, ?, ?, ?)";
+    try (PreparedStatement ps = connection.prepareStatement(pStatement)) {
+      ps.setDouble(1, p.getID());
+      ps.setString(2, p.getNombres());
+      ps.setString(3, p.getApellidos());
+      ps.setString(4, p.getEmail());
+      ps.executeUpdate();
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+  }
+
+  private Double generateId() {
+    String sql = "SELECT COALESCE(MAX(id), 0) + 1 AS next_id FROM personas";
+    try (PreparedStatement ps = connection.prepareStatement(sql);
+        ResultSet rs = ps.executeQuery()) {
+      if (rs.next()) {
+        return rs.getDouble("next_id");
+      }
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+    return Math.floor(Math.random() * 900000) + 1000;
   }
 
   public List<Persona> listar() {
