@@ -14,12 +14,20 @@ import com.mycompany.app.view.PersonaView;
 public class MainMenuView {
     public void show(Stage stage) {
     // entering MainMenuView.show()
-        // Título
-        Label title = new Label("Gestión Universitaria");
-        title.getStyleClass().add("title-label");
+    // Header
+    Label title = new Label("Gestión Universitaria");
+    title.getStyleClass().add("title-label");
 
-        // Botones con atajos de teclado y tooltips
-        Button estudiantesBtn = createButton("_Gestión de Estudiantes");
+    // Card container for main content
+    VBox card = new VBox();
+    card.getStyleClass().add("menu-card");
+    card.setPadding(new Insets(24));
+    card.setSpacing(16);
+    card.setMaxWidth(720);
+    card.setStyle("-fx-background-radius: 10; -fx-background-color: rgba(255,255,255,0.9); -fx-effect: dropshadow(one-pass-box, rgba(0,0,0,0.08), 8, 0, 0, 4);");
+
+    // Botones con atajos de teclado y tooltips
+    Button estudiantesBtn = createButton("_Gestión de Estudiantes");
         estudiantesBtn.setOnAction(e -> new EstudiantesView().show(stage));
         estudiantesBtn.setMnemonicParsing(true);
         estudiantesBtn.setTooltip(new javafx.scene.control.Tooltip("Alt+E - Ir a Gestión de Estudiantes"));
@@ -45,32 +53,32 @@ public class MainMenuView {
         col1.setAlignment(Pos.CENTER);
         col2.setAlignment(Pos.CENTER);
 
-        HBox buttonsRow = new HBox(20, col1, col2);
-        buttonsRow.setAlignment(Pos.CENTER);
+    HBox buttonsRow = new HBox(28, col1, col2);
+    buttonsRow.setAlignment(Pos.CENTER);
 
-        Label footer = new Label("v1.0 - Gestión Universitaria");
-        footer.setStyle("-fx-text-fill: #666; -fx-padding: 10 0 0 0;");
+    Label footer = new Label("v1.0 - Gestión Universitaria");
+    footer.getStyleClass().add("menu-footer");
 
-        // Layout principal con menú y toolbar
-        VBox vbox = new VBox();
-        vbox.setSpacing(0); // Sin espacio entre barras
-        
-        // Agregar MenuBar y ToolBar
-        MenuBar menuBar = createMenuBar();
-        ToolBar toolBar = createToolBar();
-        
-        // Contenedor para el contenido principal
-        VBox contentBox = new VBox();
-        contentBox.setSpacing(25);
-        contentBox.getChildren().addAll(title, buttonsRow, footer);
-        contentBox.setAlignment(Pos.CENTER);
-        contentBox.getStyleClass().add("menu-container");
-        contentBox.setPadding(new Insets(30, 0, 30, 0));
-        
-        // Agregar todos los componentes
-        vbox.getChildren().addAll(menuBar, toolBar, contentBox);
+    // Assemble card
+    card.getChildren().addAll(title, buttonsRow, footer);
 
-        Scene scene = new Scene(vbox, 760, 460);
+    // Layout principal con menú y toolbar
+    BorderPane root = new BorderPane();
+    root.setTop(new VBox(createMenuBar(), createToolBar()));
+
+    StackPane center = new StackPane();
+    center.getChildren().add(card);
+    center.setPadding(new Insets(36));
+    center.getStyleClass().add("menu-container");
+    root.setCenter(center);
+
+    // small footer at bottom
+    HBox bottom = new HBox(footer);
+    bottom.setAlignment(Pos.CENTER_RIGHT);
+    bottom.setPadding(new Insets(6, 16, 12, 16));
+    root.setBottom(bottom);
+
+    Scene scene = new Scene(root, 880, 560);
         // Aplicar stylesheet
         java.net.URL cssUrl = MainMenuView.class.getResource("/styles/main.css");
         if (cssUrl != null) {
