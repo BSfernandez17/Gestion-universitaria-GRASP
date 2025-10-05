@@ -8,7 +8,11 @@ import java.util.List;
 public class ProgramaService {
   ProgramaDAO programaDAO;
 
+<<<<<<< HEAD
   ProgramaService(ProgramaDAO programaDAO) {
+=======
+  public ProgramaService(ProgramaDAO programaDAO) {
+>>>>>>> feature/oracle-integration
     this.programaDAO = programaDAO;
   }
 

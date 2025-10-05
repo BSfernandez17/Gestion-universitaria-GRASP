@@ -8,7 +8,11 @@ import java.util.List;
 public class InscripcionService {
   InscripcionDAO inscripcionDAO;
 
+<<<<<<< HEAD
   InscripcionService(InscripcionDAO inscripcionDAO) {
+=======
+  public InscripcionService(InscripcionDAO inscripcionDAO) {
+>>>>>>> feature/oracle-integration
     this.inscripcionDAO = inscripcionDAO;
   }
 

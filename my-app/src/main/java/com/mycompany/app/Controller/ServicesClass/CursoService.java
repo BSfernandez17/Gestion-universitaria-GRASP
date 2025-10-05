@@ -8,7 +8,11 @@ import java.util.List;
 public class CursoService {
   CursoDAO cursoDAO;
 
+<<<<<<< HEAD
   CursoService(CursoDAO cursoDAO) {
+=======
+  public CursoService(CursoDAO cursoDAO) {
+>>>>>>> feature/oracle-integration
     this.cursoDAO = cursoDAO;
   }
 

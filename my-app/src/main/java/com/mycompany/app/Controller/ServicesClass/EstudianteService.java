@@ -7,7 +7,11 @@ import com.mycompany.app.Persistence.DAO.EstudianteDAO;
 public class EstudianteService {
   EstudianteDAO estudianteDAO;
 
+<<<<<<< HEAD
   EstudianteService(EstudianteDAO estudianteDAO) {
+=======
+  public EstudianteService(EstudianteDAO estudianteDAO) {
+>>>>>>> feature/oracle-integration
     this.estudianteDAO = estudianteDAO;
   }
 

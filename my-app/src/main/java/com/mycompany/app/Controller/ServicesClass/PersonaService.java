@@ -8,12 +8,24 @@ import java.util.List;
 public class PersonaService {
   PersonaDAO personaDAO;
 
+<<<<<<< HEAD
   PersonaService(PersonaDAO personaDAO) {
+=======
+  public PersonaService(PersonaDAO personaDAO) {
+>>>>>>> feature/oracle-integration
     this.personaDAO = personaDAO;
   }
 
   public void insertar(PersonaDTO pDTO) {
+<<<<<<< HEAD
     personaDAO.insertar(pDTO);
+=======
+    try {
+      personaDAO.insertar(pDTO);
+    } catch (Exception e) {
+      System.out.println("Error al insertar persona: " + e.getMessage());
+    }
+>>>>>>> feature/oracle-integration
   }
 
   public List<PersonaDTO> listar() {

@@ -1,20 +1,28 @@
 package com.mycompany.app.DTO;
 
 public class PersonaDTO {
+<<<<<<< HEAD
   private Double ID;
+=======
+  private Double id;
+>>>>>>> feature/oracle-integration
   private String nombres;
   private String apellidos;
   private String email;
 
-  public PersonaDTO(Double ID, String nombres, String apellidos, String email) {
-    this.ID = ID;
+  public PersonaDTO(Double id, String nombres, String apellidos, String email) {
+    this.id = id;
     this.nombres = nombres;
     this.apellidos = apellidos;
     this.email = email;
   }
 
+  public String toString() {
+    return id + " " + nombres + " " + apellidos + " (" + email + ")";
+  }
+
   public Double getID() {
-    return ID;
+    return id;
   }
 
   public String getNombres() {
@@ -27,5 +35,9 @@ public class PersonaDTO {
 
   public String getEmail() {
     return email;
+  }
+
+  public void setNombres(String nombres) {
+    this.nombres = nombres;
   }
 }

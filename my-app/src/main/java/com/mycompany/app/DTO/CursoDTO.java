@@ -1,12 +1,12 @@
 package com.mycompany.app.DTO;
 
 public class CursoDTO {
-  private Integer ID;
+  private Double ID;
   private String nombre;
   private ProgramaDTO programa;
   private Boolean activo;
 
-  public CursoDTO(Integer ID, String nombre, ProgramaDTO programa, Boolean activo) {
+  public CursoDTO(Double ID, String nombre, ProgramaDTO programa, Boolean activo) {
     this.ID = ID;
     this.nombre = nombre;
 
@@ -14,12 +14,12 @@ public class CursoDTO {
     this.activo = activo;
   }
 
-  public Integer getID() {
-    return ID;
-  }
-
   public String getNombre() {
     return nombre;
+  }
+
+  public Double getID() {
+    return ID;
   }
 
   public ProgramaDTO getProgramaDTO() {
@@ -28,5 +28,10 @@ public class CursoDTO {
 
   public Boolean getActivo() {
     return activo;
+  }
+
+  @Override
+  public String toString() {
+    return "Curso: " + nombre + " (ID: " + ID + ")";
   }
 }

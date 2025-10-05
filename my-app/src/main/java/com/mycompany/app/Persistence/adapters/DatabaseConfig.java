@@ -6,12 +6,14 @@ import java.sql.Statement;
 public class DatabaseConfig {
   public static void init(Connection connection) {
     try (Statement stmt = connection.createStatement()) {
-
+      stmt.execute("drop database if exists testdb");
+      stmt.execute("create database testdb");
+      stmt.execute("use testdb");
       stmt.execute(
           "CREATE TABLE IF NOT EXISTS personas (" +
               "id DOUBLE PRIMARY KEY," +
-              "nombres VARCHAR(255)," +
-              "apellidos VARCHAR(255)," +
+              "nombre VARCHAR(255)," +
+              "apellido VARCHAR(255)," +
               "email VARCHAR(255)" +
               ")");
 
@@ -21,8 +23,6 @@ public class DatabaseConfig {
               "id DOUBLE PRIMARY KEY," +
               "nombre VARCHAR(255)," +
               "decano_id DOUBLE," +
-              "telefono VARCHAR(255)," +
-              "email VARCHAR(255)," +
               "FOREIGN KEY (decano_id) REFERENCES personas(id)" +
               ")");
 
@@ -42,9 +42,7 @@ public class DatabaseConfig {
           "CREATE TABLE IF NOT EXISTS profesores (" +
               "id DOUBLE PRIMARY KEY," +
               "persona_id DOUBLE," +
-              "nivel VARCHAR(255)," +
-              "contrato VARCHAR(255)," +
-              "activo BOOLEAN," +
+              "tipoContrato VARCHAR(255)," +
               "FOREIGN KEY (persona_id) REFERENCES personas(id)" +
               ")");
 
@@ -64,7 +62,7 @@ public class DatabaseConfig {
       // Tabla Curso
       stmt.execute(
           "CREATE TABLE IF NOT EXISTS cursos (" +
-              "id INTEGER PRIMARY KEY," +
+              "id DOUBLE PRIMARY KEY," +
               "nombre VARCHAR(255)," +
               "programa_id DOUBLE," +
               "activo BOOLEAN," +
@@ -74,11 +72,11 @@ public class DatabaseConfig {
       // Tabla CursoProfesor (relación many-to-many)
       stmt.execute(
           "CREATE TABLE IF NOT EXISTS curso_profesor (" +
-              "curso_id INTEGER," +
+              "id DOUBLE PRIMARY KEY," +
+              "curso_id DOUBLE," +
               "profesor_id DOUBLE," +
               "año INTEGER," +
               "semestre INTEGER," +
-              "PRIMARY KEY (profesor_id, curso_id, año, semestre)," +
               "FOREIGN KEY (profesor_id) REFERENCES profesores(id)," +
               "FOREIGN KEY (curso_id) REFERENCES cursos(id)" +
               ")");
@@ -86,9 +84,9 @@ public class DatabaseConfig {
       // Tabla Inscripcion (relación many-to-many)
       stmt.execute(
           "CREATE TABLE IF NOT EXISTS inscripciones (" +
-              "id INTEGER PRIMARY KEY AUTO_INCREMENT," +
-              "curso_id INTEGER," +
-              "estudiante_id DOUBLE," +
+              "id DOUBLE PRIMARY KEY," + // <-- ahora es DOUBLE
+              "curso_id DOUBLE," + // <-- debe ser DOUBLE
+              "estudiante_id DOUBLE," + // <-- debe ser DOUBLE
               "año INTEGER," +
               "semestre INTEGER," +
               "UNIQUE(curso_id, estudiante_id, año, semestre)," +

@@ -4,7 +4,6 @@ public class Facultad {
   private Double id;
   private String nombre;
   private Persona decano;
-  private String email;
 
   public Facultad() {
     // Constructor vacío
@@ -34,8 +33,5 @@ public class Facultad {
     return decano;
   }
 
-  public String getEmail() {
-    return email;
-  }
 
 }

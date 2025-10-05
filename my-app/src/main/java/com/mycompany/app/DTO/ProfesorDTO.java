@@ -11,4 +11,15 @@ public class ProfesorDTO extends PersonaDTO {
   public String getTipoContrato() {
     return TipoContrato;
   }
+  
+  @Override
+  public Double getID(){
+    return super.getID();
+  }
+
+  @Override
+  public String getEmail() {
+    // TODO Auto-generated method stub
+    return super.getEmail();
+  }
 }

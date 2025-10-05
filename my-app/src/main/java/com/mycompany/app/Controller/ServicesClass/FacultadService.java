@@ -8,7 +8,11 @@ import java.util.List;
 public class FacultadService {
   FacultadDAO facultadDAO;
 
+<<<<<<< HEAD
   FacultadService(FacultadDAO facultadDAO) {
+=======
+  public FacultadService(FacultadDAO facultadDAO) {
+>>>>>>> feature/oracle-integration
     this.facultadDAO = facultadDAO;
   }
 
