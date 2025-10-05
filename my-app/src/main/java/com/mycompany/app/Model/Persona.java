@@ -23,6 +23,11 @@ public class Persona {
     return id;
   }
 
+  // JavaBean-style accessor expected by PropertyValueFactory for property 'id'
+  public double getId() {
+    return id;
+  }
+
   public String getNombres() {
     return nombres;
   }

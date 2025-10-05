@@ -1,0 +1,6 @@
+target/
+*.db
+run.log
+.classpath
+.settings/
+/.idea/

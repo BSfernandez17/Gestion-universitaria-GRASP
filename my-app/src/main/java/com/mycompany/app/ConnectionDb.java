@@ -1,61 +1,60 @@
 package com.mycompany.app;
 
-import com.mycompany.app.Factories.DataBaseFactory;
-import com.mycompany.app.Persistence.adapters.DataBaseAdapter;
-import com.mycompany.app.Persistence.adapters.DatabaseConfig;
-import com.mycompany.app.Persistence.adapters.DatabaseConfigOracle;
-import java.io.FileInputStream;
-import java.io.IOException;
 import java.sql.Connection;
-import java.util.Properties;
+import java.sql.DriverManager;
+import com.mycompany.app.Persistence.adapters.DatabaseConfig;
 
-import com.mycompany.app.seeders.DatabaseOracleSeed;
-import com.mycompany.app.seeders.DatabaseSeed;
-
+/**
+ * Clase encargada de manejar la conexión única (singleton) a la base de datos.
+ * 
+ * Esta versión:
+ *  - Establece la conexión una sola vez y la reutiliza.
+ *  - Inicializa la estructura de tablas si no existen.
+ *  - NO ejecuta el seeder automáticamente (se ejecuta manualmente desde App.java o MainFX.java).
+ */
 public class ConnectionDb {
 
-  private static Connection connection;
+    // Conexión única compartida en toda la aplicación
+    private static Connection connection;
 
-  private ConnectionDb() {
-    // Constructor privado para que no se pueda instanciar
-  }
-
-  public static Connection getConnection() {
-    if (connection == null) {
-      try {
-        // Cargar archivo de configuración
-        Properties props = new Properties();
-        FileInputStream fis = new FileInputStream("src/main/java/com/mycompany/app/Config/Databaseconf.properties");
-        props.load(fis);
-
-        // Crear adapter con la factory
-        DataBaseAdapter adapter = DataBaseFactory.create(props);
-
-        // Obtener conexión
-        connection = adapter.getConnection();
-
-        System.out.println("✅ Conexión establecida con " + props.getProperty("db.type"));
-        if (props.getProperty("db.type").equals("h2") || props.getProperty("db.type").equals("mysql")) {
-
-          try {
-            DatabaseConfig.init(connection);
-            DatabaseSeed.seed(connection);
-            System.out.println("✅ Tablas creadas o ya existían");
-          } catch (Exception e) {
-            System.out.println("⚠️ Error al inicializar la base de datos: " + e.getMessage());
+    /**
+     * Devuelve una conexión activa a la base de datos.
+     * Si no existe, crea una nueva y configura la base.
+     */
+    public static Connection getConnection() {
+        try {
+            if (connection == null || connection.isClosed()) {
+                // ⚙️ URL de la base de datos (ajusta según tu entorno)
+                String url = "jdbc:sqlite:database.db"; // Ejemplo con SQLite local
+                connection = DriverManager.getConnection(url);
+                System.out.println("✅ Conexión establecida con la base de datos.");
+                // Inicializar esquema de la base de datos (crear tablas si no existen)
+                try {
+                    DatabaseConfig.init(connection);
+                } catch (Exception e) {
+                    System.err.println("⚠️ Error al inicializar esquema DB: " + e.getMessage());
+                    e.printStackTrace();
+                }
+                System.out.println("ℹ️ Esquema DB inicializado (si fue necesario). No se ejecuta automáticamente el seed.");
+            }
+        } catch (Exception e) {
+            System.err.println("❌ Error al conectar con la base de datos: " + e.getMessage());
             e.printStackTrace();
-          }
-        } else {
-          DatabaseConfigOracle.init(connection);
-          DatabaseOracleSeed.seed(connection);
         }
-      } catch (IOException e) {
-        System.out.println("⚠️ Error al leer archivo de configuración: " + e.getMessage());
-      } catch (Exception e) {
-        System.out.println("⚠️ Error al crear la conexión: " + e.getMessage());
-        e.printStackTrace();
-      }
+        return connection;
     }
-    return connection;
-  }
+
+    /**
+     * Cierra la conexión de forma segura.
+     */
+    public static void close() {
+        try {
+            if (connection != null && !connection.isClosed()) {
+                connection.close();
+                System.out.println("🔒 Conexión cerrada correctamente.");
+            }
+        } catch (Exception e) {
+            System.err.println("⚠️ Error al cerrar la conexión: " + e.getMessage());
+        }
+    }
 }

@@ -35,7 +35,9 @@ public class EstudianteDAO {
 
   public List<Estudiante> listar() {
     List<Estudiante> estudiantes = new ArrayList<>();
-    String sql = "SELECT * FROM estudiantes";
+    // Join estudiantes with personas to get human-readable fields inserted by the seeders
+    String sql = "SELECT e.id AS id, p.nombre AS nombres, p.apellido AS apellidos, p.email AS email, e.codigo AS codigo, e.activo AS activo, e.promedio AS promedio "
+        + "FROM estudiantes e LEFT JOIN personas p ON e.persona_id = p.id";
     try (PreparedStatement ps = connection.prepareStatement(sql);
         ResultSet rs = ps.executeQuery()) {
       while (rs.next()) {

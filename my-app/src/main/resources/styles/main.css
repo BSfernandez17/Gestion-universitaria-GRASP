@@ -1,0 +1,55 @@
+/* Main menu styles */
+.root {
+    -fx-font-family: "Segoe UI", "Roboto", "Arial";
+}
+
+.title-label {
+    -fx-font-size: 24px;
+    -fx-font-weight: 700;
+    -fx-text-fill: #2b3e50;
+}
+
+.menu-container {
+    -fx-padding: 36px;
+    -fx-background-color: linear-gradient(#ffffff, #eef6ff);
+}
+
+.buttons-row {
+    -fx-spacing: 20px;
+    -fx-alignment: center;
+}
+
+.menu-column {
+    -fx-alignment: center;
+    -fx-spacing: 12px;
+}
+
+.menu-button {
+    -fx-background-color: linear-gradient(#4a90e2, #357ab8);
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-padding: 10 22 10 22;
+    -fx-background-radius: 8;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(one-pass-box, rgba(0,0,0,0.12), 2, 0, 0, 1);
+}
+
+.menu-button:hover {
+    -fx-background-color: linear-gradient(#5aa0f2, #468fd0);
+}
+
+.menu-footer {
+    -fx-text-fill: #6b7280;
+    -fx-padding: 10 0 0 0;
+}
+
+.icon-badge {
+    -fx-background-color: #ffffff55;
+    -fx-border-radius: 6;
+    -fx-background-radius: 6;
+    -fx-padding: 6;
+}
+
+.button-with-icon .label {
+    -fx-padding: 0 0 0 8;
+}
