@@ -44,9 +44,20 @@ public class UiContext {
 
     private static Connection conn() {
         if (connection == null) {
-            connection = ConnectionDb.getConnection();
+            connection = ConnectionDb.createConnection();
         }
         return connection;
+    }
+
+    /**
+     * Cierra la conexión usada por el contexto UI. Llamar al shutdown al
+     * terminar la aplicación si es necesario.
+     */
+    public static void shutdown() {
+        if (connection != null) {
+            ConnectionDb.closeConnection(connection);
+            connection = null;
+        }
     }
 
     public static EstudianteController estudianteController() {

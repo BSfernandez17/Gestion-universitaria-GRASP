@@ -11,6 +11,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import com.mycompany.app.Model.Profesor;
+import java.util.regex.Pattern;
 import com.mycompany.app.Controller.ProfesorController;
 import com.mycompany.app.DTO.ProfesorDTO;
 
@@ -105,6 +106,12 @@ public class ProfesoresView {
                 return;
             }
 
+            // Validación de formato de correo
+            if (!isValidEmail(emailField.getText())) {
+                showAlert("Email inválido", "Por favor ingresa un correo electrónico con formato válido.");
+                return;
+            }
+
             // Usamos el email como base de ID si fuera necesario, pero el DAO creará IDs consistentes.
             // Creamos el DTO con un ID provisional igual al hash del email para mantener la convención de Persona
             double provisionalId = Math.abs(emailField.getText().hashCode());
@@ -137,6 +144,11 @@ public class ProfesoresView {
             }
             if (isBlank(nombresField) || isBlank(apellidosField) || isBlank(emailField) || tipoContratoBox.getValue() == null) {
                 showAlert("Campos incompletos", "Completa Nombres, Apellidos, Email y el Tipo de contrato.");
+                return;
+            }
+            // Validación de formato de correo antes de actualizar
+            if (!isValidEmail(emailField.getText())) {
+                showAlert("Email inválido", "Por favor ingresa un correo electrónico con formato válido.");
                 return;
             }
             try {
@@ -194,5 +206,11 @@ public class ProfesoresView {
         alert.setHeaderText(header);
         alert.setContentText(content);
         alert.showAndWait();
+    }
+
+    private static boolean isValidEmail(String email) {
+        if (email == null) return false;
+        String regex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
+        return Pattern.compile(regex).matcher(email).matches();
     }
 }

@@ -9,15 +9,26 @@ import java.util.List;
 import com.mycompany.app.Model.Curso;
 import com.mycompany.app.Model.Programa;
 import com.mycompany.app.DTO.CursoDTO;
+import com.mycompany.app.Patterns.Observer.CursoEvent;
+import com.mycompany.app.Patterns.Observer.CursoSubject;
 
 public class CursoDAO {
 
   private Connection connection;
   private static volatile CursoDAO instance;
+  // Subject to notify observers about data changes related to cursos
+  private static final CursoSubject SUBJECT = new CursoSubject();
+  static {
+    // Auto-subscribe the CursoCreationObserver so every INSERT triggers a thread
+    SUBJECT.subscribe(new com.mycompany.app.Patterns.Observer.CursoCreationObserver());
+  }
 
   public CursoDAO(Connection connection) {
     this.connection = connection;
   }
+
+  public static void subscribe(com.mycompany.app.Patterns.Observer.CursoObserver o) { SUBJECT.subscribe(o); }
+  public static void unsubscribe(com.mycompany.app.Patterns.Observer.CursoObserver o) { SUBJECT.unsubscribe(o); }
 
   /**
    * Thread-safe singleton accessor. The first call sets the connection used by the DAO.
@@ -43,6 +54,8 @@ public class CursoDAO {
       ps.setDouble(3, c.getProgramaDTO().getID());
       ps.setBoolean(4, c.getActivo());
       ps.executeUpdate();
+  // notify observers
+  SUBJECT.notify(new CursoEvent(CursoEvent.Action.INSERT, c.getID()));
     } catch (SQLException e) {
       e.printStackTrace();
     }
@@ -133,6 +146,7 @@ public class CursoDAO {
     try (PreparedStatement ps = connection.prepareStatement(sql)) {
       ps.setInt(1, id);
       ps.executeUpdate();
+  SUBJECT.notify(new CursoEvent(CursoEvent.Action.DELETE, id));
     } catch (SQLException e) {
       e.printStackTrace();
     }
@@ -146,6 +160,7 @@ public class CursoDAO {
       ps.setBoolean(3, c.getActivo());
       ps.setDouble(4, c.getID());
       ps.executeUpdate();
+  SUBJECT.notify(new CursoEvent(CursoEvent.Action.UPDATE, c.getID()));
     } catch (SQLException e) {
       e.printStackTrace();
     }

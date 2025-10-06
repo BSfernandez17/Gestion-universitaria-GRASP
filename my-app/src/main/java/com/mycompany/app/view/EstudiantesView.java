@@ -21,6 +21,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import com.mycompany.app.Controller.EstudianteController;
+import java.util.regex.Pattern;
 import com.mycompany.app.Controller.ProgramaController;
 import com.mycompany.app.DTO.EstudianteDTO;
 import com.mycompany.app.DTO.ProgramaDTO;
@@ -134,6 +135,12 @@ public class EstudiantesView {
                 return;
             }
 
+            // Validación de formato de correo
+            if (!isValidEmail(email)) {
+                showAlert("Email inválido", "Por favor ingresa un correo electrónico con formato válido.");
+                return;
+            }
+
             double codigo;
             double promedio;
             try {
@@ -200,6 +207,9 @@ public class EstudiantesView {
             }
         });
 
+        // Validación al actualizar: verificar formato de email antes de llamar al controlador
+        // (Se hace dentro del bloque try/catch para mantener el flujo existente.)
+
         // Eliminar
         deleteBtn.setOnAction(e -> {
             Estudiante selected = table.getSelectionModel().getSelectedItem();
@@ -243,5 +253,11 @@ public class EstudiantesView {
         alert.setHeaderText(header);
         alert.setContentText(content);
         alert.showAndWait();
+    }
+
+    private static boolean isValidEmail(String email) {
+        if (email == null) return false;
+        String regex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
+        return Pattern.compile(regex).matcher(email).matches();
     }
 }

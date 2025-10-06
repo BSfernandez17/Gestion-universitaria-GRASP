@@ -1,9 +1,6 @@
 package com.mycompany.app;
 
-import java.io.FileInputStream;
-import java.io.IOException;
 import java.sql.Connection;
-import java.util.Properties;
 import com.mycompany.app.Controller.ServicesClass.FacultadService;
 import com.mycompany.app.Controller.ServicesClass.InscripcionService;
 import com.mycompany.app.Controller.CursoController;
@@ -39,7 +36,7 @@ import com.mycompany.app.Persistence.DAO.CursoDAO;
 
 public class App {
   public static void main(String[] args) {
-    Connection conn = ConnectionDb.getConnection();
+  Connection conn = ConnectionDb.createConnection();
     PersonaDAO personaDAO = new PersonaDAO(conn);
     PersonaService personaService = new PersonaService(personaDAO);
     PersonaController personaController = new PersonaController(personaService);
@@ -147,5 +144,7 @@ public class App {
   cursoProfesorController.insertar(cpDTO);
   System.out.println("LISTA CON CURSO PROFESOR NUEVO:");
   cursoProfesorController.listar().forEach(System.out::println);
-}
+    // Cerrar la conexión al finalizar la ejecución del ejemplo
+    ConnectionDb.closeConnection(conn);
+  }
 }
