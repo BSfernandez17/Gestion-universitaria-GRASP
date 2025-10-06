@@ -36,18 +36,79 @@ public class ProgramasView {
     topBar.setPadding(new Insets(10, 10, 0, 10));
 
         TableView<Programa> table = new TableView<>();
+        table.setPrefHeight(300);
+        table.setStyle("-fx-border-color: #ddd; -fx-border-width: 1px; -fx-background-color: white; -fx-font-size: 14px;");
+
+        // ID column
         TableColumn<Programa, Double> idCol = new TableColumn<>("ID");
         idCol.setCellValueFactory(new PropertyValueFactory<>("ID"));
+        idCol.setPrefWidth(80);
+        idCol.setStyle("-fx-alignment: CENTER-RIGHT;");
+        idCol.setCellFactory(col -> new TableCell<Programa, Double>() {
+            @Override
+            protected void updateItem(Double item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setText(null);
+                } else {
+                    setText(String.format("%.0f", item));
+                }
+            }
+        });
+
+        // Nombre column
         TableColumn<Programa, String> nombreCol = new TableColumn<>("Nombre");
         nombreCol.setCellValueFactory(new PropertyValueFactory<>("nombre"));
+        nombreCol.setPrefWidth(250);
+        nombreCol.setStyle("-fx-alignment: CENTER-LEFT;");
+
+        // Duración column
         TableColumn<Programa, Double> duracionCol = new TableColumn<>("Duración");
         duracionCol.setCellValueFactory(new PropertyValueFactory<>("duracion"));
+        duracionCol.setPrefWidth(120);
+        duracionCol.setStyle("-fx-alignment: CENTER-RIGHT;");
+        duracionCol.setCellFactory(col -> new TableCell<Programa, Double>() {
+            @Override
+            protected void updateItem(Double item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setText(null);
+                } else {
+                    setText(String.format("%.0f sem.", item));
+                }
+            }
+        });
+
+        // Registro column with formatted date
         TableColumn<Programa, Date> registroCol = new TableColumn<>("Registro");
         registroCol.setCellValueFactory(new PropertyValueFactory<>("registro"));
+        registroCol.setPrefWidth(150);
+        registroCol.setStyle("-fx-alignment: CENTER;");
+        registroCol.setCellFactory(col -> new TableCell<Programa, Date>() {
+            private final java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("dd/MM/yyyy");
+            @Override
+            protected void updateItem(Date item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setText(null);
+                } else {
+                    setText(sdf.format(item));
+                }
+            }
+        });
+
+        // Add columns to table
         table.getColumns().add(idCol);
         table.getColumns().add(nombreCol);
         table.getColumns().add(duracionCol);
         table.getColumns().add(registroCol);
+
+        // Enable sorting
+        idCol.setSortType(TableColumn.SortType.ASCENDING);
+        table.getSortOrder().add(idCol);
+        
+        // Additional table styles
+        table.getStylesheets().add(getClass().getResource("/styles/table-styles.css").toExternalForm());
 
         TextField nombreField = new TextField();
         nombreField.setPromptText("Nombre");

@@ -33,20 +33,72 @@ public class CursosView {
     topBar.setPadding(new Insets(10, 10, 0, 10));
 
         TableView<Curso> table = new TableView<>();
+        table.setPrefHeight(300);
+        table.setStyle("-fx-border-color: #ddd; -fx-border-width: 1px; -fx-background-color: white; -fx-font-size: 14px;");
+        
+        // ID column
         TableColumn<Curso, Double> idCol = new TableColumn<>("ID");
         idCol.setCellValueFactory(new PropertyValueFactory<>("ID"));
+        idCol.setPrefWidth(80);
+        idCol.setStyle("-fx-alignment: CENTER-RIGHT;");
+        idCol.setCellFactory(col -> new TableCell<Curso, Double>() {
+            @Override
+            protected void updateItem(Double item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setText(null);
+                } else {
+                    setText(String.format("%.0f", item));
+                }
+            }
+        });
+
+        // Nombre column
         TableColumn<Curso, String> nombreCol = new TableColumn<>("Nombre");
         nombreCol.setCellValueFactory(new PropertyValueFactory<>("nombre"));
-        TableColumn<Curso, Boolean> activoCol = new TableColumn<>("Activo");
-        activoCol.setCellValueFactory(new PropertyValueFactory<>("activo"));
+        nombreCol.setPrefWidth(200);
+        nombreCol.setStyle("-fx-alignment: CENTER-LEFT;");
+
+        // Programa column
         TableColumn<Curso, String> programaCol = new TableColumn<>("Programa");
         programaCol.setCellValueFactory(cell -> new ReadOnlyStringWrapper(
             cell.getValue().getPrograma() != null ? cell.getValue().getPrograma().getNombre() : ""
         ));
+        programaCol.setPrefWidth(200);
+        programaCol.setStyle("-fx-alignment: CENTER-LEFT;");
+
+        // Activo column with Sí/No display
+        TableColumn<Curso, Boolean> activoCol = new TableColumn<>("Activo");
+        activoCol.setCellValueFactory(new PropertyValueFactory<>("activo"));
+        activoCol.setPrefWidth(100);
+        activoCol.setStyle("-fx-alignment: CENTER;");
+        activoCol.setCellFactory(col -> new TableCell<Curso, Boolean>() {
+            @Override
+            protected void updateItem(Boolean item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty) {
+                    setText(null);
+                } else {
+                    setText(Boolean.TRUE.equals(item) ? "Sí" : "No");
+                    setStyle(Boolean.TRUE.equals(item) ? 
+                        "-fx-text-fill: #006600; -fx-font-weight: bold;" :
+                        "-fx-text-fill: #cc0000;");
+                }
+            }
+        });
+
+        // Add columns to table
         table.getColumns().add(idCol);
         table.getColumns().add(nombreCol);
         table.getColumns().add(programaCol);
         table.getColumns().add(activoCol);
+
+        // Enable sorting
+        idCol.setSortType(TableColumn.SortType.ASCENDING);
+        table.getSortOrder().add(idCol);
+        
+        // Additional table styles
+        table.getStylesheets().add(getClass().getResource("/styles/table-styles.css").toExternalForm());
 
         TextField nombreField = new TextField();
         nombreField.setPromptText("Nombre del curso");
@@ -91,6 +143,7 @@ public class CursosView {
         }
 
         addBtn.setOnAction(e -> {
+            System.out.println("[CursosView] addBtn clicked thread=" + Thread.currentThread().getName());
             if (isBlank(nombreField) || programaBox.getValue() == null) {
                 showAlert("Campos incompletos", "Completa Nombre y Programa.");
                 return;
@@ -120,6 +173,7 @@ public class CursosView {
         });
 
         updateBtn.setOnAction(e -> {
+            System.out.println("[CursosView] updateBtn clicked thread=" + Thread.currentThread().getName());
             var selected = table.getSelectionModel().getSelectedItem();
             if (selected == null) {
                 showAlert("Sin selección", "Selecciona un curso de la tabla para actualizar.");
@@ -141,6 +195,7 @@ public class CursosView {
         });
 
         deleteBtn.setOnAction(e -> {
+            System.out.println("[CursosView] deleteBtn clicked thread=" + Thread.currentThread().getName());
             var selected = table.getSelectionModel().getSelectedItem();
             if (selected == null) {
                 showAlert("Sin selección", "Selecciona un curso de la tabla para eliminar.");

@@ -20,14 +20,35 @@ public class CursoDAO {
 
   public void insertar(CursoDTO c) {
     String sql = "INSERT INTO cursos (id, nombre, programa_id, activo) VALUES (?, ?, ?, ?)";
-    try (PreparedStatement ps = connection.prepareStatement(sql)) {
-      ps.setDouble(1, generateID());
-      ps.setString(2, c.getNombre());
-      ps.setDouble(3, c.getProgramaDTO().getID());
-      ps.setBoolean(4, c.getActivo());
-      ps.executeUpdate();
+    boolean initialAutoCommit = true;
+    try {
+      initialAutoCommit = connection.getAutoCommit();
+      connection.setAutoCommit(false);
+      try (PreparedStatement ps = connection.prepareStatement(sql)) {
+        Double newId = generateID();
+        ps.setDouble(1, newId);
+        ps.setString(2, c.getNombre());
+        ps.setDouble(3, c.getProgramaDTO().getID());
+        ps.setBoolean(4, c.getActivo());
+        ps.executeUpdate();
+        connection.commit();
+        System.out.println("[CursoDAO] insertar committed id=" + newId + " thread=" + Thread.currentThread().getName());
+        // Notify observers after successful commit
+        com.mycompany.app.Patterns.Observer.CursoSubject.getInstance().notify(
+            new com.mycompany.app.Patterns.Observer.CursoEvent(
+                com.mycompany.app.Patterns.Observer.CursoEvent.Action.INSERT, newId));
+        System.out.println("[CursoDAO] notified SUBJECT for INSERT id=" + newId + " thread=" + Thread.currentThread().getName());
+      }
     } catch (SQLException e) {
+      try {
+        connection.rollback();
+        System.out.println("[CursoDAO] insertar rolled back due to error: " + e.getMessage());
+      } catch (SQLException ex) {
+        System.out.println("[CursoDAO] rollback failed: " + ex.getMessage());
+      }
       e.printStackTrace();
+    } finally {
+      try { connection.setAutoCommit(initialAutoCommit); } catch (SQLException ex) { System.out.println("[CursoDAO] could not restore autoCommit: " + ex.getMessage()); }
     }
   }
   private Double generateID(){
@@ -162,14 +183,34 @@ public class CursoDAO {
 
   public void actualizar(CursoDTO c) {
     String sql = "UPDATE cursos SET nombre=?, programa_id=?, activo=? WHERE id=?";
-    try (PreparedStatement ps = connection.prepareStatement(sql)) {
-      ps.setString(1, c.getNombre());
-      ps.setDouble(2, c.getProgramaDTO().getID());
-      ps.setBoolean(3, c.getActivo());
-      ps.setDouble(4, c.getID());
-      ps.executeUpdate();
+    boolean initialAutoCommit = true;
+    try {
+      initialAutoCommit = connection.getAutoCommit();
+      connection.setAutoCommit(false);
+      try (PreparedStatement ps = connection.prepareStatement(sql)) {
+        ps.setString(1, c.getNombre());
+        ps.setDouble(2, c.getProgramaDTO().getID());
+        ps.setBoolean(3, c.getActivo());
+        ps.setDouble(4, c.getID());
+        int updated = ps.executeUpdate();
+        connection.commit();
+        System.out.println("[CursoDAO] actualizar committed id=" + c.getID() + " updatedRows=" + updated + " thread=" + Thread.currentThread().getName());
+        // Notify observers after successful commit
+        com.mycompany.app.Patterns.Observer.CursoSubject.getInstance().notify(
+            new com.mycompany.app.Patterns.Observer.CursoEvent(
+                com.mycompany.app.Patterns.Observer.CursoEvent.Action.UPDATE, c.getID()));
+        System.out.println("[CursoDAO] notified SUBJECT for UPDATE id=" + c.getID() + " thread=" + Thread.currentThread().getName());
+      }
     } catch (SQLException e) {
+      try {
+        connection.rollback();
+        System.out.println("[CursoDAO] actualizar rolled back due to error: " + e.getMessage());
+      } catch (SQLException ex) {
+        System.out.println("[CursoDAO] rollback failed: " + ex.getMessage());
+      }
       e.printStackTrace();
+    } finally {
+      try { connection.setAutoCommit(initialAutoCommit); } catch (SQLException ex) { System.out.println("[CursoDAO] could not restore autoCommit: " + ex.getMessage()); }
     }
   }
 }

@@ -33,7 +33,7 @@ public class CursoCreationObserver implements CursoObserver {
   @Override
   public void onCursoChanged(CursoEvent event) {
     if (event == null) return;
-    System.out.println("[CursoCreationObserver] onCursoChanged received event: action=" + event.getAction() + " id=" + event.getId());
+      System.out.println("[CursoCreationObserver] onCursoChanged received event: action=" + event.getAction() + " id=" + event.getId() + " thread=" + Thread.currentThread().getName());
     switch (event.getAction()) {
       case INSERT:
         submitAsyncTask(event.getId(), "nuevo curso");
@@ -52,9 +52,9 @@ public class CursoCreationObserver implements CursoObserver {
   private void submitAsyncTask(Object id, String reason) {
     EXECUTOR.submit(() -> {
       try {
-        System.out.println("[CursoCreationObserver] Task started for " + reason + " id=" + id);
+          System.out.println("[CursoCreationObserver] Task started for " + reason + " id=" + id + " thread=" + Thread.currentThread().getName());
         Thread.sleep(50);
-        System.out.println("[CursoCreationObserver] Task finished for " + reason + " id=" + id);
+          System.out.println("[CursoCreationObserver] Task finished for " + reason + " id=" + id + " thread=" + Thread.currentThread().getName());
       } catch (InterruptedException e) {
         Thread.currentThread().interrupt();
       } catch (Exception ex) {

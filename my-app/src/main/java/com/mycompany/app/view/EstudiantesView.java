@@ -30,18 +30,69 @@ public class EstudiantesView {
         topBar.setPadding(new Insets(10, 10, 0, 10));
 
         TableView<Estudiante> table = new TableView<>();
+        table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        table.getStyleClass().add("custom-table");
+
+        // ID column
         TableColumn<Estudiante, Double> idCol = new TableColumn<>("ID");
         idCol.setCellValueFactory(new PropertyValueFactory<>("ID"));
+        idCol.setMinWidth(80);
+        idCol.setMaxWidth(100);
+        idCol.setSortType(TableColumn.SortType.ASCENDING);
+        idCol.setCellFactory(col -> new TableCell<Estudiante, Double>() {
+            @Override
+            protected void updateItem(Double item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setText(null);
+                } else {
+                    setText(String.format("%.0f", item));
+                }
+            }
+        });
+
+        // Nombres column
         TableColumn<Estudiante, String> nombresCol = new TableColumn<>("Nombres");
         nombresCol.setCellValueFactory(new PropertyValueFactory<>("nombres"));
+        nombresCol.setMinWidth(150);
+
+        // Apellidos column
         TableColumn<Estudiante, String> apellidosCol = new TableColumn<>("Apellidos");
         apellidosCol.setCellValueFactory(new PropertyValueFactory<>("apellidos"));
+        apellidosCol.setMinWidth(150);
+
+        // Email column with validation highlight
         TableColumn<Estudiante, String> emailCol = new TableColumn<>("Email");
         emailCol.setCellValueFactory(new PropertyValueFactory<>("email"));
-    table.getColumns().add(idCol);
-    table.getColumns().add(nombresCol);
-    table.getColumns().add(apellidosCol);
-    table.getColumns().add(emailCol);
+        emailCol.setMinWidth(200);
+        emailCol.setCellFactory(col -> new TableCell<Estudiante, String>() {
+            @Override
+            protected void updateItem(String email, boolean empty) {
+                super.updateItem(email, empty);
+                if (empty || email == null) {
+                    setText(null);
+                    setStyle("");
+                } else {
+                    setText(email);
+                    if (!isValidEmail(email)) {
+                        setStyle("-fx-background-color: #ffe6e6;");
+                    } else {
+                        setStyle("");
+                    }
+                }
+            }
+        });
+
+        table.getColumns().addAll(idCol, nombresCol, apellidosCol, emailCol);
+        table.getSortOrder().add(idCol);
+
+        // Add table styles
+        table.setStyle("-fx-border-color: #ddd; -fx-border-width: 1px; -fx-background-color: white;");
+        String tableStyle = "-fx-font-size: 14px; -fx-selection-bar: #e6f3ff; -fx-selection-bar-non-focused: #f5f5f5;";
+        table.setStyle(table.getStyle() + tableStyle);
+
+        // Make table take available space
+        table.setPrefHeight(300);
 
         TextField nombresField = new TextField();
         nombresField.setPromptText("Nombres");
