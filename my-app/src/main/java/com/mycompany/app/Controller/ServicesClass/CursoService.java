@@ -24,7 +24,8 @@ public class CursoService {
     cursoDAO.actualizar(cDTO);
   }
 
-  public void eliminar(Integer id) {
+  public void eliminar(Double id) {
+    System.out.println("[CursoService] eliminar called with id=" + id);
     cursoDAO.eliminar(id);
   }
 }

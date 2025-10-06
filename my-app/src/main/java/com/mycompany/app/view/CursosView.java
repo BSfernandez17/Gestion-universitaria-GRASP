@@ -146,8 +146,29 @@ public class CursosView {
                 showAlert("Sin selección", "Selecciona un curso de la tabla para eliminar.");
                 return;
             }
-            cursoCtrl.eliminar(selected.getID().intValue());
-            table.setItems(loadData(cursoCtrl));
+            // Log current table contents (before delete)
+            System.out.println("[CursosView] delete button clicked; selected id=" + selected.getID());
+            System.out.println("[CursosView] table contents BEFORE delete:");
+            table.getItems().forEach(c -> System.out.println("  id=" + c.getID() + " nombre='" + c.getNombre() + "'"));
+
+            cursoCtrl.eliminar(selected.getID());
+
+            // Reload table and log contents AFTER delete
+            var newItems = loadData(cursoCtrl);
+            table.setItems(newItems);
+            System.out.println("[CursosView] table contents AFTER delete (reloaded):");
+            newItems.forEach(c -> System.out.println("  id=" + c.getID() + " nombre='" + c.getNombre() + "'"));
+            // Also query DB directly to see if the row still exists
+            try (java.sql.Connection conn = UiContext.getSharedConnection();
+                 java.sql.PreparedStatement ps = conn.prepareStatement("SELECT id, nombre FROM cursos ORDER BY id");
+                 java.sql.ResultSet rs = ps.executeQuery()) {
+                System.out.println("[CursosView] DB cursos rows:");
+                while (rs.next()) {
+                    System.out.println("  db id=" + rs.getDouble("id") + " nombre='" + rs.getString("nombre") + "'");
+                }
+            } catch (Exception ex) {
+                System.out.println("[CursosView] error querying DB cursos: " + ex.getMessage());
+            }
             clearForm(nombreField, programaBox, activoCheck);
             showAlert("Eliminado", "Curso eliminado correctamente.");
         });

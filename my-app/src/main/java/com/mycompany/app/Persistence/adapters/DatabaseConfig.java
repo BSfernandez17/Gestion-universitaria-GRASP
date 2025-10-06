@@ -6,9 +6,17 @@ import java.sql.Statement;
 public class DatabaseConfig {
   public static void init(Connection connection) {
     try (Statement stmt = connection.createStatement()) {
-      stmt.execute("drop database if exists testdb");
-      stmt.execute("create database testdb");
-      stmt.execute("use testdb");
+      // For embedded/in-memory databases (H2) we cannot drop/create the database.
+      // Instead drop tables if they exist (child tables first to avoid FK errors),
+      // then recreate them. This works across H2/MySQL.
+      stmt.execute("DROP TABLE IF EXISTS inscripciones");
+      stmt.execute("DROP TABLE IF EXISTS curso_profesor");
+      stmt.execute("DROP TABLE IF EXISTS cursos");
+      stmt.execute("DROP TABLE IF EXISTS estudiantes");
+      stmt.execute("DROP TABLE IF EXISTS profesores");
+      stmt.execute("DROP TABLE IF EXISTS programas");
+      stmt.execute("DROP TABLE IF EXISTS facultades");
+      stmt.execute("DROP TABLE IF EXISTS personas");
       stmt.execute(
           "CREATE TABLE IF NOT EXISTS personas (" +
               "id DOUBLE PRIMARY KEY," +

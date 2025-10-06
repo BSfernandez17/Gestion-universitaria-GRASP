@@ -111,13 +111,52 @@ public class CursoDAO {
   }
   return curso;
  }
-  public void eliminar(Integer id) {
-    String sql = "DELETE FROM cursos WHERE id=?";
-    try (PreparedStatement ps = connection.prepareStatement(sql)) {
-      ps.setInt(1, id);
-      ps.executeUpdate();
+  public void eliminar(Double id) {
+    // We'll delete dependent rows first to satisfy FK constraints, inside a transaction.
+    boolean initialAutoCommit = true;
+    try {
+      initialAutoCommit = connection.getAutoCommit();
+      connection.setAutoCommit(false);
+
+      try (PreparedStatement delCursoProfesor = connection.prepareStatement("DELETE FROM curso_profesor WHERE curso_id = ?");
+           PreparedStatement delInscripciones = connection.prepareStatement("DELETE FROM inscripciones WHERE curso_id = ?");
+           PreparedStatement delCurso = connection.prepareStatement("DELETE FROM cursos WHERE id = ?")) {
+
+        System.out.println("[CursoDAO] eliminar transaction start for id=" + id);
+
+        delCursoProfesor.setDouble(1, id);
+        int cpDeleted = delCursoProfesor.executeUpdate();
+        System.out.println("[CursoDAO] deleted " + cpDeleted + " rows from curso_profesor for curso_id=" + id);
+
+        delInscripciones.setDouble(1, id);
+        int insDeleted = delInscripciones.executeUpdate();
+        System.out.println("[CursoDAO] deleted " + insDeleted + " rows from inscripciones for curso_id=" + id);
+
+        delCurso.setDouble(1, id);
+        int cursosDeleted = delCurso.executeUpdate();
+        System.out.println("[CursoDAO] deleted " + cursosDeleted + " rows from cursos for id=" + id);
+
+        connection.commit();
+        System.out.println("[CursoDAO] transaction committed for delete id=" + id);
+
+        // Notify observers only after successful commit
+        com.mycompany.app.Patterns.Observer.CursoSubject.getInstance().notify(new com.mycompany.app.Patterns.Observer.CursoEvent(com.mycompany.app.Patterns.Observer.CursoEvent.Action.DELETE, id));
+        System.out.println("[CursoDAO] notified SUBJECT for DELETE id=" + id);
+      }
     } catch (SQLException e) {
+      try {
+        connection.rollback();
+        System.out.println("[CursoDAO] transaction rolled back due to error: " + e.getMessage());
+      } catch (SQLException ex) {
+        System.out.println("[CursoDAO] rollback failed: " + ex.getMessage());
+      }
       e.printStackTrace();
+    } finally {
+      try {
+        connection.setAutoCommit(initialAutoCommit);
+      } catch (SQLException ex) {
+        System.out.println("[CursoDAO] could not restore autoCommit: " + ex.getMessage());
+      }
     }
   }
 

@@ -23,7 +23,7 @@ public class CursoController {
     cursoService.actualizar(cDTO);
   }
 
-  public void eliminar(Integer id) {
+  public void eliminar(Double id) {
     cursoService.eliminar(id);
   }
 }

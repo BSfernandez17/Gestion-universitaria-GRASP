@@ -3,21 +3,13 @@ package com.mycompany.app.view;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.Alert;
+import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.Tooltip;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import com.mycompany.app.Model.Estudiante;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import com.mycompany.app.Controller.EstudianteController;
@@ -27,7 +19,7 @@ import com.mycompany.app.DTO.ProgramaDTO;
 
 public class EstudiantesView {
     public void show(Stage stage) {
-    Label title = new Label("Gestión de Estudiantes");
+        Label title = new Label("Gestión de Estudiantes");
         title.setStyle("-fx-font-size: 18px; -fx-font-weight: bold;");
 
         // Barra superior con botón de regreso
@@ -38,74 +30,69 @@ public class EstudiantesView {
         topBar.setPadding(new Insets(10, 10, 0, 10));
 
         TableView<Estudiante> table = new TableView<>();
-    TableColumn<Estudiante, Double> idCol = new TableColumn<>("ID");
-    // Persona.getID() -> propiedad "ID" respetando mayúsculas
-    idCol.setCellValueFactory(new PropertyValueFactory<>("ID"));
-    TableColumn<Estudiante, String> nombresCol = new TableColumn<>("Nombres");
-    nombresCol.setCellValueFactory(new PropertyValueFactory<>("nombres"));
-    TableColumn<Estudiante, String> apellidosCol = new TableColumn<>("Apellidos");
-    apellidosCol.setCellValueFactory(new PropertyValueFactory<>("apellidos"));
-    TableColumn<Estudiante, String> emailCol = new TableColumn<>("Email");
-    emailCol.setCellValueFactory(new PropertyValueFactory<>("email"));
+        TableColumn<Estudiante, Double> idCol = new TableColumn<>("ID");
+        idCol.setCellValueFactory(new PropertyValueFactory<>("ID"));
+        TableColumn<Estudiante, String> nombresCol = new TableColumn<>("Nombres");
+        nombresCol.setCellValueFactory(new PropertyValueFactory<>("nombres"));
+        TableColumn<Estudiante, String> apellidosCol = new TableColumn<>("Apellidos");
+        apellidosCol.setCellValueFactory(new PropertyValueFactory<>("apellidos"));
+        TableColumn<Estudiante, String> emailCol = new TableColumn<>("Email");
+        emailCol.setCellValueFactory(new PropertyValueFactory<>("email"));
     table.getColumns().add(idCol);
     table.getColumns().add(nombresCol);
     table.getColumns().add(apellidosCol);
     table.getColumns().add(emailCol);
 
-    TextField nombresField = new TextField();
+        TextField nombresField = new TextField();
         nombresField.setPromptText("Nombres");
-    TextField apellidosField = new TextField();
+        TextField apellidosField = new TextField();
         apellidosField.setPromptText("Apellidos");
-    TextField emailField = new TextField();
+        TextField emailField = new TextField();
         emailField.setPromptText("Email");
-    TextField codigoField = new TextField();
-    codigoField.setPromptText("Código");
-    TextField promedioField = new TextField();
-    promedioField.setPromptText("Promedio");
-    CheckBox activoCheck = new CheckBox("Activo");
-    ComboBox<ProgramaDTO> programaBox = new ComboBox<>();
-    programaBox.setPromptText("Programa");
+        TextField codigoField = new TextField();
+        codigoField.setPromptText("Código");
+        TextField promedioField = new TextField();
+        promedioField.setPromptText("Promedio");
+        CheckBox activoCheck = new CheckBox("Activo");
+        ComboBox<ProgramaDTO> programaBox = new ComboBox<>();
+        programaBox.setPromptText("Programa");
 
-    Button addBtn = new Button("Agregar");
-    Button updateBtn = new Button("Actualizar");
-    Button deleteBtn = new Button("Eliminar");
-    Button clearBtn = new Button("Limpiar");
+        Button addBtn = new Button("Agregar");
+        Button updateBtn = new Button("Actualizar");
+        Button deleteBtn = new Button("Eliminar");
+        Button clearBtn = new Button("Limpiar");
 
-    // Evita que se muestren como "..."
-    addBtn.setMinWidth(110);
-    updateBtn.setMinWidth(110);
-    deleteBtn.setMinWidth(110);
-    clearBtn.setMinWidth(110);
+        addBtn.setMinWidth(110);
+        updateBtn.setMinWidth(110);
+        deleteBtn.setMinWidth(110);
+        clearBtn.setMinWidth(110);
 
-    addBtn.setTooltip(new Tooltip("Agregar estudiante"));
-    updateBtn.setTooltip(new Tooltip("Actualizar estudiante seleccionado"));
-    deleteBtn.setTooltip(new Tooltip("Eliminar estudiante seleccionado"));
-    clearBtn.setTooltip(new Tooltip("Limpiar formulario"));
+        addBtn.setTooltip(new Tooltip("Agregar estudiante"));
+        updateBtn.setTooltip(new Tooltip("Actualizar estudiante seleccionado"));
+        deleteBtn.setTooltip(new Tooltip("Eliminar estudiante seleccionado"));
+        clearBtn.setTooltip(new Tooltip("Limpiar formulario"));
 
-    // Reorganizamos el formulario en filas para que no se comprima
-    HBox fieldsRow1 = new HBox(10, nombresField, apellidosField, emailField);
-    fieldsRow1.setAlignment(Pos.CENTER);
-    fieldsRow1.setPadding(new Insets(10));
+        HBox fieldsRow1 = new HBox(10, nombresField, apellidosField, emailField);
+        fieldsRow1.setAlignment(Pos.CENTER);
+        fieldsRow1.setPadding(new Insets(10));
 
-    HBox fieldsRow2 = new HBox(10, codigoField, promedioField, activoCheck, programaBox);
-    fieldsRow2.setAlignment(Pos.CENTER);
-    fieldsRow2.setPadding(new Insets(10));
+        HBox fieldsRow2 = new HBox(10, codigoField, promedioField, activoCheck, programaBox);
+        fieldsRow2.setAlignment(Pos.CENTER);
+        fieldsRow2.setPadding(new Insets(10));
 
-    HBox actionsRow = new HBox(12, addBtn, updateBtn, deleteBtn, clearBtn);
-    actionsRow.setAlignment(Pos.CENTER);
-    actionsRow.setPadding(new Insets(10));
+        HBox actionsRow = new HBox(12, addBtn, updateBtn, deleteBtn, clearBtn);
+        actionsRow.setAlignment(Pos.CENTER);
+        actionsRow.setPadding(new Insets(10));
 
-    VBox vbox = new VBox(15, topBar, title, table, fieldsRow1, fieldsRow2, actionsRow);
+        VBox vbox = new VBox(15, topBar, title, table, fieldsRow1, fieldsRow2, actionsRow);
         vbox.setAlignment(Pos.CENTER);
         vbox.setPadding(new Insets(20));
 
-        // Primero montar y mostrar la escena para evitar que un fallo de carga bloquee el cambio de vista
         Scene scene = new Scene(vbox, 1000, 500);
         stage.setTitle("Gestión de Estudiantes");
         stage.setScene(scene);
         stage.show();
 
-        // Cargar datos desde el controlador (con manejo de errores)
         EstudianteController controller = UiContext.estudianteController();
         try {
             table.setItems(loadData(controller));
@@ -114,7 +101,6 @@ public class EstudiantesView {
             showAlert("Error", "No se pudieron cargar los estudiantes.\n" + ex.getMessage());
         }
 
-        // Cargar programas (con manejo de errores)
         try {
             ProgramaController programaCtrl = UiContext.programaController();
             programaBox.setItems(FXCollections.observableArrayList(programaCtrl.listar()));
@@ -123,7 +109,7 @@ public class EstudiantesView {
             showAlert("Error", "No se pudieron cargar los programas.\n" + ex.getMessage());
         }
 
-        // Acción Agregar
+        // Agregar
         addBtn.setOnAction(e -> {
             String nombres = nombresField.getText();
             String apellidos = apellidosField.getText();
@@ -133,7 +119,10 @@ public class EstudiantesView {
                 showAlert("Campos incompletos", "Completa Nombres, Apellidos, Email y selecciona un Programa.");
                 return;
             }
-
+            if (!isValidEmail(email)) {
+                showAlert("Email inválido", "Introduce una dirección de correo válida.");
+                return;
+            }
             double codigo;
             double promedio;
             try {
@@ -143,10 +132,8 @@ public class EstudiantesView {
                 showAlert("Valores inválidos", "Código y Promedio deben ser numéricos.");
                 return;
             }
-
             boolean activo = activoCheck.isSelected();
-            double newId = codigo; // usamos código como ID por simplicidad
-
+            double newId = codigo;
             EstudianteDTO nuevo = new EstudianteDTO(newId, nombres, apellidos, email, codigo, programa, activo, promedio);
             controller.insertar(nuevo);
             table.setItems(loadData(controller));
@@ -154,7 +141,7 @@ public class EstudiantesView {
             showAlert("Agregado", "Estudiante agregado correctamente.");
         });
 
-        // Selección -> llena el formulario
+        // Selección
         table.getSelectionModel().selectedItemProperty().addListener((obs, oldSel, sel) -> {
             if (sel == null) return;
             nombresField.setText(sel.getNombres());
@@ -163,7 +150,6 @@ public class EstudiantesView {
             codigoField.setText(sel.getCodigo() != null ? sel.getCodigo().toString() : "");
             promedioField.setText(sel.getPromedio() != null ? sel.getPromedio().toString() : "");
             activoCheck.setSelected(Boolean.TRUE.equals(sel.getActivo()));
-            // Seleccionar programa coincidente en el ComboBox
             if (sel.getPrograma() != null) {
                 ProgramaDTO match = programaBox.getItems().stream()
                         .filter(p -> p.getID().equals(sel.getPrograma().getID()))
@@ -189,7 +175,10 @@ public class EstudiantesView {
                 double codigo = Double.parseDouble(codigoField.getText());
                 double promedio = Double.parseDouble(promedioField.getText());
                 boolean activo = activoCheck.isSelected();
-
+                if (!isValidEmail(emailField.getText())) {
+                    showAlert("Email inválido", "Introduce una dirección de correo válida.");
+                    return;
+                }
                 EstudianteDTO dto = new EstudianteDTO(id, nombresField.getText(), apellidosField.getText(), emailField.getText(), codigo, programa, activo, promedio);
                 controller.actualizar(dto);
                 table.setItems(loadData(controller));
@@ -215,9 +204,6 @@ public class EstudiantesView {
 
         // Limpiar
         clearBtn.setOnAction(e -> clearForm(nombresField, apellidosField, emailField, codigoField, promedioField, activoCheck, programaBox));
-
-    // vbox ya fue creado arriba
-
     }
 
     private ObservableList<Estudiante> loadData(EstudianteController controller) {
@@ -243,5 +229,10 @@ public class EstudiantesView {
         alert.setHeaderText(header);
         alert.setContentText(content);
         alert.showAndWait();
+    }
+
+    private boolean isValidEmail(String email) {
+        if (email == null) return false;
+        return email.matches("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$");
     }
 }

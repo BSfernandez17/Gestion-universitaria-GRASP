@@ -33,6 +33,17 @@ import com.mycompany.app.DTO.ProgramaDTO;
  */
 public class UiContext {
     private static Connection connection;
+    // Register the default observer for cursos on class load so the observer
+    // receives notifications when DAOs call CursoSubject.getInstance().notify(...)
+    static {
+        try {
+            com.mycompany.app.Patterns.Observer.CursoSubject.getInstance()
+                    .register(new com.mycompany.app.Patterns.Observer.CursoCreationObserver());
+            System.out.println("[UiContext] CursoCreationObserver registered");
+        } catch (Throwable t) {
+            System.out.println("[UiContext] failed to register CursoCreationObserver: " + t.getMessage());
+        }
+    }
     private static EstudianteController estudianteController;
     private static ProgramaController programaController;
     private static PersonaController personaController;
@@ -49,6 +60,24 @@ public class UiContext {
         return connection;
     }
 
+    /**
+     * Cierra la conexión usada por el contexto UI. Llamar al shutdown al
+     * terminar la aplicación si es necesario.
+     */
+    public static void shutdown() {
+        if (connection != null) {
+            ConnectionDb.closeConnection(connection);
+            connection = null;
+        }
+    }
+
+    /**
+     * Devuelve la conexión compartida utilizada por el contexto UI.
+     * Útil para diagnósticos (no crea una nueva conexión si ya existe).
+     */
+    public static Connection getSharedConnection() {
+        return conn();
+    }
     public static EstudianteController estudianteController() {
         if (estudianteController == null) {
             EstudianteDAO dao = new EstudianteDAO(conn());
